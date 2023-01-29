@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { addDoc, serverTimestamp } from "firebase/firestore";
-import { usersRef, auth } from "../config/firebase";
+import { usersRef, auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Register = ({ isDark }) => {
@@ -13,28 +13,26 @@ const Register = ({ isDark }) => {
   const [error, setError] = useState();
 
   const registerUserForm = async (e) => {
-    const userObj = {
-      username: username,
-      password: password,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      birthDate: birthDate,
-      posts: [],
-      createdAt: serverTimestamp(),
-    };
     e.preventDefault();
+
     await createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
         console.log(cred.user);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-    addDoc(usersRef, userObj)
-      .then((snapshot) => {
-        console.log(snapshot);
-        e.target.reset();
+        cred.user.displayName = username;
+        const userObj = {
+          password: password,
+          firstName: firstName,
+          username: cred.user.displayName,
+          lastName: lastName,
+          email: email,
+          birthDate: birthDate,
+          posts: [],
+          createdAt: serverTimestamp(),
+          userID: cred.user.uid,
+          photoURL: cred.user.photoURL,
+          isEmailVerified: cred.user.emailVerified,
+        };
+        addDoc(usersRef, userObj);
       })
       .catch((err) => err.message);
   };

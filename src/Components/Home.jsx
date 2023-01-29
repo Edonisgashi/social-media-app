@@ -10,7 +10,7 @@ import AddPost from "./AddPost";
 import { Modal } from "react-bootstrap";
 
 const Home = ({ isDark }) => {
-  const { posts, setActiveUser } = useContext(appContext);
+  const { posts, currentUser } = useContext(appContext);
   const [showModal, setShowModal] = useState(false);
   const [comments, setComments] = useState([]);
 
@@ -48,19 +48,14 @@ const Home = ({ isDark }) => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setActiveUser(user);
-      }
-    });
-  }, []);
-
+  console.log(currentUser);
   return (
     <div className="d-flex">
       <Sidebar className="sidebar col-sm-4 col-md-3 col-lg-2" />
       <div className="timeline d-flex flex-column col-md-6 col-lg-7 mx-auto my-5">
-        <AddPost className="position-top" isDark={isDark} />
+        {currentUser !== null ? (
+          <AddPost className="position-top" isDark={isDark} />
+        ) : null}
         {posts?.length > 0 &&
           posts?.map((post, i) => {
             return (
@@ -68,7 +63,7 @@ const Home = ({ isDark }) => {
                 {post.user ? <span>{post.user}</span> : null}
                 <br />
                 <span className="text-muted">
-                  {post.postedTime.toDate().toLocaleString()}
+                  {post.postedTime?.toDate().toLocaleString()}
                 </span>
                 <h2>{post?.title}</h2>
                 <div className="post_img col-4 col-sm-5 col-md-6 col-lg-7">
@@ -84,6 +79,7 @@ const Home = ({ isDark }) => {
                         isDark ? "outline-light" : " none"
                       } d-flex border-0`}
                       onClick={(e) => addLike(post.id, i, "like")}
+                      disabled={currentUser === null}
                     >
                       <AiOutlineLike className="mx-1" />
                       Like
@@ -94,6 +90,7 @@ const Home = ({ isDark }) => {
                         isDark ? "outline-light" : " none"
                       } d-flex border-0`}
                       onClick={(e) => addLike(post.id, i, "dislike")}
+                      disabled={currentUser === null}
                     >
                       <AiOutlineDislike className="mx-1" />
                       Dislike
@@ -117,16 +114,21 @@ const Home = ({ isDark }) => {
                       className={`btn btn-${
                         isDark ? "outline-light" : "outline-primary"
                       } border-${isDark ? "light" : "dark"}`}
+                      disabled={currentUser === null}
                     >
                       <AiOutlineSend />
                     </button>
                   </div>
 
                   <button
-                    className="btn btn-primary"
+                    className={`btn btn-${
+                      isDark ? "outline-light" : "primary"
+                    }`}
                     onClick={() => handleShowModal(post.id)}
+                    disabled={currentUser === null}
                   >
-                    Show Comments
+                    Show Comments{" "}
+                    <span className="mx-1">{post.comments.length}</span>
                   </button>
 
                   <Modal show={showModal} onHide={handleCloseModal}>

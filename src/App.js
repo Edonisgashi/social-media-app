@@ -5,9 +5,11 @@ import Login from "./Components/Login";
 import Navbar from "./Components/Navbar";
 import Register from "./Components/Register";
 import AppContext from "./Context/AppContext";
-
+import Profile from "./Components/Profile";
+import ProtectedRoute from "./Components/ProtectedRoute";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AddPost from "./Components/AddPost";
 
 const App = () => {
   const [isDark, setIsDark] = useState(false);
@@ -29,6 +31,14 @@ const App = () => {
               <Route path="/" element={<Home isDark={isDark} />} />
               <Route path="/login" element={<Login isDark={isDark} />} />
               <Route path="/register" element={<Register isDark={isDark} />} />
+              <Route
+                path="/profile/:id"
+                element={<Profile isDark={isDark} />}
+              />
+              <Route
+                path="/newpost"
+                element={<ProtectedRoute component={AddPost} />}
+              />
             </Routes>
           </Router>
         </AppContext>

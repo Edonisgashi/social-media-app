@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { addDoc, serverTimestamp } from "firebase/firestore";
 import { postsRef } from "../config/firebase";
+import { appContext } from "../Context/AppContext";
 const AddPost = ({ isDark }) => {
   const [text, setText] = useState("");
   const [photo, setPhoto] = useState();
-
+  const { currentUser } = useContext(appContext);
   const addPost = (e) => {
     e.preventDefault();
-    // const fileUrl = URL.createObjectURL(photo);
     addDoc(postsRef, {
       likes: 0,
+      postID: currentUser.uid,
       title: text,
       user: "edonisgashi",
       comments: [{ title: "Say no more...", user: "edonisxgashi" }],

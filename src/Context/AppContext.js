@@ -1,6 +1,7 @@
 import React, { useEffect, useState, createContext } from "react";
-import { postsRef, usersRef } from "../config/firebase";
+import { postsRef, usersRef, auth } from "../config/firebase";
 import { onSnapshot } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const appContext = createContext();
 const AppContext = ({ children }) => {
@@ -38,11 +39,18 @@ const AppContext = ({ children }) => {
   useEffect(() => {
     fetchUsers();
     fetchPosts();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+        console.log(user);
+      } else {
+        setCurrentUser(null);
+      }
+    });
   }, [loader]);
+
   return (
-    <appContext.Provider
-      value={{ users, posts, error, currentUser, setActiveUser }}
-    >
+    <appContext.Provider value={{ users, posts, error, currentUser }}>
       {children}
     </appContext.Provider>
   );
