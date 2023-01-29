@@ -1,217 +1,171 @@
-import React, { useState } from "react";
-import { db, usersRef, postsRef, auth } from "../config/firebase";
-import {
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  query,
-  where,
-  getDoc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
-import {
-  createUserWithEmailAndPassword,
-  signOut,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
-const Home = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [ID, setID] = useState("");
+import React, { useState, useContext, useEffect } from "react";
+import { appContext } from "../Context/AppContext";
+import { AiOutlineLike, AiOutlineSend, AiOutlineDislike } from "react-icons/ai";
+import { VscComment } from "react-icons/vsc";
+import { db, auth } from "../config/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import Sidebar from "./Sidebar";
+import AddPost from "./AddPost";
+import { Modal } from "react-bootstrap";
 
-  //getting docs from a collection
+const Home = ({ isDark }) => {
+  const { posts, setActiveUser } = useContext(appContext);
+  const [showModal, setShowModal] = useState(false);
+  const [comments, setComments] = useState([]);
 
-  // const fetchData = () => {
-  //   getDocs(usersRef).then((snapshot) => {
-  //     const users = [];
-  //     snapshot.docs.forEach((doc) => {
-  //       users.push({ ...doc.data(), id: doc.id });
-  //     });
-  //     console.log(users);
-  //   });
-  //   getDocs(postsRef).then((snapshot) => {
-  //     const posts = [];
-  //     snapshot.docs.forEach((doc) => {
-  //       posts.push({ ...doc.data(), id: doc.id });
-  //     });
-  //     console.log(posts);
-  //   });
-  // };
+  const addLike = async (id, index, operator) => {
+    const postToLike = doc(db, "posts", id);
+    const userSnapshot = await getDoc(postToLike);
+    const userData = userSnapshot.data();
+    const currentLikes = userData.likes;
 
-  // Real-time collection data
+    let updatedLikes;
+    if (operator === "like") {
+      updatedLikes = currentLikes + 1;
+    } else if (operator === "dislike") {
+      updatedLikes = currentLikes - 1;
+    }
+    if (updatedLikes >= 0) {
+      const updatedPost = {
+        ...userData,
+        likes: updatedLikes,
+      };
 
-  const fetchData = () => {
-    // fetch only data based on a condition;
+      updateDoc(postToLike, updatedPost);
+    } else {
+      alert("Likes cannot be under 0");
+    }
+  };
+  const handleShowModal = (id) => {
+    setShowModal(true);
+    const postComentRef = doc(db, "posts", id);
+    getDoc(postComentRef).then((snapshot) =>
+      setComments(snapshot.data().comments)
+    );
+  };
 
-    // const q = query(usersRef, where("username", "==", "anaya"));
-
-    // get a snapshot in all users
-    onSnapshot(usersRef, (snapshot) => {
-      // and then get real-time collection obly for that query
-      // onSnapshot(q, (snapshot) => {
-      const users = [];
-      snapshot.docs.forEach((doc) => {
-        users.push({ ...doc.data(), id: doc.id });
-        console.log(users);
-      });
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setActiveUser(user);
+      }
     });
-  };
+  }, []);
 
-  //Adding Docs in a collection
-
-  const addUser = async (e) => {
-    e.preventDefault();
-    addDoc(usersRef, {
-      username: username,
-      createdAt: serverTimestamp(),
-    }).then((snapshot) => {
-      console.log(snapshot);
-      e.target.reset();
-    });
-  };
-
-  //Deletin' Docs from a collection
-
-  const deleteUser = (e) => {
-    e.preventDefault();
-    const docRef = doc(db, "users", ID);
-
-    deleteDoc(docRef).then(e.target.reset());
-  };
-
-  // fetching a single user...
-
-  const getAUser = (e) => {
-    e.preventDefault();
-    const docRef = doc(db, "users", ID);
-    getDoc(docRef).then((snapshot) => console.log(snapshot.data()));
-    e.target.reset();
-  };
-
-  // Updating a user
-
-  const updateUser = (e) => {
-    e.preventDefault();
-    const docRef = doc(db, "users", ID);
-    updateDoc(docRef, {
-      username: "new updated username",
-    });
-    e.target.reset();
-  };
-
-  // Sign Up with Firebase Auth
-  const signUpUser = (e) => {
-    e.preventDefault();
-
-    console.log(email, password);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((cred) => {
-        console.log("user created", cred.user);
-        e.target.reset();
-      })
-      .catch((error) => console.log(error.message));
-  };
-
-  // Logging in & out.
-
-  const logOut = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("user signed out");
-      })
-      .catch((err) => console.log(err.message));
-  };
-
-  const logIn = (e) => {
-    e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((response) => {
-        console.log("user logged in ", response.user);
-        e.target.reset();
-      })
-      .catch((err) => console.log(err.message));
-  };
-
-  // Subscribing to auth changes
-
-  onAuthStateChanged(auth, (user) => {
-    console.log("user state", user);
-  });
   return (
-    <div>
-      <h1>Home Page</h1>
-      <button onClick={fetchData}>Fetch data</button>
+    <div className="d-flex">
+      <Sidebar className="sidebar col-sm-4 col-md-3 col-lg-2" />
+      <div className="timeline d-flex flex-column col-md-6 col-lg-7 mx-auto my-5">
+        <AddPost className="position-top" isDark={isDark} />
+        {posts?.length > 0 &&
+          posts?.map((post, i) => {
+            return (
+              <div key={i}>
+                {post.user ? <span>{post.user}</span> : null}
+                <br />
+                <span className="text-muted">
+                  {post.postedTime.toDate().toLocaleString()}
+                </span>
+                <h2>{post?.title}</h2>
+                <div className="post_img col-4 col-sm-5 col-md-6 col-lg-7">
+                  {post.image ? (
+                    <img src={post.image} className="img-fluid mx-auto" />
+                  ) : null}
+                </div>
+                <div className="actions d-flex flex-column justify-content-start my-3 align-items-start">
+                  <p className="text-muted">{post?.likes}</p>
+                  <div className="d-flex justify-content-start">
+                    <button
+                      className={`btn btn-${
+                        isDark ? "outline-light" : " none"
+                      } d-flex border-0`}
+                      onClick={(e) => addLike(post.id, i, "like")}
+                    >
+                      <AiOutlineLike className="mx-1" />
+                      Like
+                    </button>
 
-      <form action="" onSubmit={addUser}>
-        <input
-          type="text"
-          placeholder="enter username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <button>Add user</button>
-      </form>
-      <form action="" onSubmit={deleteUser}>
-        <input
-          type="text"
-          placeholder="your id"
-          onChange={(e) => setID(e.target.value)}
-        />
-        <button>Delete user</button>
-      </form>
-      <form action="" onSubmit={getAUser}>
-        <input
-          type="text"
-          placeholder="your id"
-          onChange={(e) => setID(e.target.value)}
-        />
-        <button>Get a user</button>
-      </form>
-      <form action="" onSubmit={updateUser}>
-        <input
-          type="text"
-          placeholder="your id"
-          onChange={(e) => setID(e.target.value)}
-        />
-        <button>update a user</button>
-      </form>
+                    <button
+                      className={`btn btn-${
+                        isDark ? "outline-light" : " none"
+                      } d-flex border-0`}
+                      onClick={(e) => addLike(post.id, i, "dislike")}
+                    >
+                      <AiOutlineDislike className="mx-1" />
+                      Dislike
+                    </button>
 
-      <h1>Firebase Auth</h1>
+                    <button
+                      className={`btn btn-${
+                        isDark ? "outline-light" : " none"
+                      } d-flex border-0`}
+                    >
+                      <VscComment className="mx-1" /> Comment
+                    </button>
 
-      <form action="" onSubmit={signUpUser}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button>Sign Up</button>
-      </form>
+                    <input
+                      type="textarea"
+                      className={`${
+                        isDark ? "bg-dark text-light" : "bg-light text-dark"
+                      } border-${isDark ? "light" : "dark"}`}
+                    />
+                    <button
+                      className={`btn btn-${
+                        isDark ? "outline-light" : "outline-primary"
+                      } border-${isDark ? "light" : "dark"}`}
+                    >
+                      <AiOutlineSend />
+                    </button>
+                  </div>
 
-      <h2>Login</h2>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => handleShowModal(post.id)}
+                  >
+                    Show Comments
+                  </button>
 
-      <form action="" onSubmit={logIn}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" />
-        <button>Log in</button>
-      </form>
-      <button onClick={logOut}>Log out</button>
+                  <Modal show={showModal} onHide={handleCloseModal}>
+                    <Modal.Header
+                      closeButton
+                      style={{
+                        backgroundColor: isDark ? "#343a40" : "#f8f9fa",
+                        color: isDark ? "#f8f9fa" : "#343a40",
+                      }}
+                    >
+                      <Modal.Title>Comments</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body
+                      style={{
+                        backgroundColor: isDark ? "#343a40" : "#f8f9fa",
+                        color: isDark ? "#f8f9fa" : "#343a40",
+                      }}
+                    >
+                      {post.comments
+                        ? comments.map((comment, i) => (
+                            <div key={i}>
+                              <p>
+                                <span className="mx-2 text-muted">
+                                  {comment.user === ""
+                                    ? "Anonymous"
+                                    : comment.user}
+                                </span>
+                                : {comment.title}
+                              </p>
+                            </div>
+                          ))
+                        : null}
+                    </Modal.Body>
+                  </Modal>
+                </div>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 };

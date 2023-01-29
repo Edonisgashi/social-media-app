@@ -1,0 +1,16 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+}
+form {
+  background-color: white !important;
+}
+li a {
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 170%;
+}
+.sidebar {
+  max-height: 400px;
+  overflow-y: auto;
+}
