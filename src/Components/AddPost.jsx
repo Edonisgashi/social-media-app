@@ -8,17 +8,21 @@ const AddPost = ({ isDark }) => {
   const { currentUser } = useContext(appContext);
   const addPost = (e) => {
     e.preventDefault();
-    addDoc(postsRef, {
-      likes: 0,
-      postID: currentUser.uid,
-      title: text,
-      user: "edonisgashi",
-      comments: [{ title: "Say no more...", user: "edonisxgashi" }],
-      postedTime: serverTimestamp(),
-    }).then((response) => {
-      console.log(response);
-      e.target.reset();
-    });
+    console.log(currentUser);
+
+    if (text !== "") {
+      addDoc(postsRef, {
+        likes: 0,
+        postID: currentUser.uid,
+        title: text,
+        user: currentUser.displayName,
+        comments: [],
+        postedTime: serverTimestamp(),
+      }).then((response) => {
+        console.log(response);
+        e.target.reset();
+      });
+    }
   };
   return (
     <>

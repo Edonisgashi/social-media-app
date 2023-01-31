@@ -1,18 +1,21 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { appContext } from "../Context/AppContext";
 import { AiOutlineLike, AiOutlineSend, AiOutlineDislike } from "react-icons/ai";
 import { VscComment } from "react-icons/vsc";
 import { db, auth } from "../config/firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Sidebar from "./Sidebar";
 import AddPost from "./AddPost";
 import { Modal } from "react-bootstrap";
+import UsersList from "./UsersList";
 
 const Home = ({ isDark }) => {
   const { posts, currentUser } = useContext(appContext);
   const [showModal, setShowModal] = useState(false);
   const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const commentUser = currentUser?.displayName;
+  const inputRef = useRef(null);
 
   const addLike = async (id, index, operator) => {
     const postToLike = doc(db, "posts", id);
@@ -48,10 +51,30 @@ const Home = ({ isDark }) => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  const addComent = (id) => {
+    const postToComment = doc(db, "posts", id);
+    if (commentText !== "") {
+      getDoc(postToComment).then((snapshot) => {
+        const postData = snapshot.data();
+        updateDoc(postToComment, {
+          ...postData,
+          comments: [
+            ...postData.comments,
+            {
+              text: commentText,
+              user: commentUser,
+            },
+          ],
+        });
+        inputRef.current.value = "";
+      });
+    }
+  };
   console.log(currentUser);
   return (
     <div className="d-flex">
-      <Sidebar className="sidebar col-sm-4 col-md-3 col-lg-2" />
+      <Sidebar isDark={isDark} />
       <div className="timeline d-flex flex-column col-md-6 col-lg-7 mx-auto my-5">
         {currentUser !== null ? (
           <AddPost className="position-top" isDark={isDark} />
@@ -96,24 +119,20 @@ const Home = ({ isDark }) => {
                       Dislike
                     </button>
 
-                    <button
-                      className={`btn btn-${
-                        isDark ? "outline-light" : " none"
-                      } d-flex border-0`}
-                    >
-                      <VscComment className="mx-1" /> Comment
-                    </button>
-
                     <input
+                      ref={inputRef}
                       type="textarea"
                       className={`${
                         isDark ? "bg-dark text-light" : "bg-light text-dark"
                       } border-${isDark ? "light" : "dark"}`}
+                      placeholder="Add a comment"
+                      onChange={(e) => setCommentText(e.target.value)}
                     />
                     <button
                       className={`btn btn-${
                         isDark ? "outline-light" : "outline-primary"
                       } border-${isDark ? "light" : "dark"}`}
+                      onClick={() => addComent(post.id)}
                       disabled={currentUser === null}
                     >
                       <AiOutlineSend />
@@ -148,7 +167,7 @@ const Home = ({ isDark }) => {
                       }}
                     >
                       {post.comments
-                        ? comments.map((comment, i) => (
+                        ? comments?.map((comment, i) => (
                             <div key={i}>
                               <p>
                                 <span className="mx-2 text-muted">
@@ -156,7 +175,7 @@ const Home = ({ isDark }) => {
                                     ? "Anonymous"
                                     : comment.user}
                                 </span>
-                                : {comment.title}
+                                : {comment.text}
                               </p>
                             </div>
                           ))
@@ -168,6 +187,7 @@ const Home = ({ isDark }) => {
             );
           })}
       </div>
+      <UsersList isDark={isDark} />
     </div>
   );
 };

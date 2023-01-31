@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { addDoc, serverTimestamp } from "firebase/firestore";
 import { usersRef, auth, db } from "../config/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const Register = ({ isDark }) => {
   const [birthDate, setBirthDate] = useState();
@@ -18,15 +18,18 @@ const Register = ({ isDark }) => {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
         console.log(cred.user);
-        cred.user.displayName = username;
+        updateProfile(cred.user, { displayName: username });
         const userObj = {
           password: password,
           firstName: firstName,
-          username: cred.user.displayName,
+          username: username,
           lastName: lastName,
           email: email,
           birthDate: birthDate,
           posts: [],
+          friends: [],
+          groups: [],
+          saved: [],
           createdAt: serverTimestamp(),
           userID: cred.user.uid,
           photoURL: cred.user.photoURL,
@@ -34,7 +37,7 @@ const Register = ({ isDark }) => {
         };
         addDoc(usersRef, userObj);
       })
-      .catch((err) => err.message);
+      .catch((err) => console.log(err.message));
   };
 
   return (

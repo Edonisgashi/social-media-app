@@ -8,8 +8,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   console.log(currentUser);
 
   useEffect(() => {
-    if (currentUser !== "null") {
+    if (currentUser !== null) {
       setShowComponent(true);
+    } else {
       navigate("/login");
     }
   }, [currentUser]);

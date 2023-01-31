@@ -4,6 +4,7 @@ import { CiDark } from "react-icons/ci";
 import { MdOutlineLogout, MdOutlineLogin } from "react-icons/md";
 import { RiRegisteredLine } from "react-icons/ri";
 import { VscHome } from "react-icons/vsc";
+import { ImProfile } from "react-icons/im";
 import { appContext } from "../Context/AppContext";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
@@ -45,16 +46,29 @@ const Navbar = ({ isDark, handleTheme }) => {
           </Link>
         </>
       ) : (
-        <Link
-          to="/"
-          className="text-decoration-none text-light"
-          onClick={signOutUser}
-        >
-          <h3 className="d-flex align-items-center ">
-            <MdOutlineLogout />{" "}
-            <span className="d-none d-lg-flex mx-1">Logout</span>
-          </h3>
-        </Link>
+        <>
+          <Link
+            to={`profile/${currentUser?.uid}`}
+            className="text-decoration-none text-light"
+          >
+            <h3 className="d-flex align-items-center ">
+              <ImProfile />{" "}
+              <span className="d-none d-lg-flex mx-1">
+                {currentUser?.displayName}
+              </span>
+            </h3>
+          </Link>
+          <Link
+            to="/"
+            className="text-decoration-none text-light"
+            onClick={signOutUser}
+          >
+            <h3 className="d-flex align-items-center ">
+              <MdOutlineLogout />{" "}
+              <span className="d-none d-lg-flex mx-1">Logout</span>
+            </h3>
+          </Link>
+        </>
       )}
       <div className="themeBtn">
         <button
