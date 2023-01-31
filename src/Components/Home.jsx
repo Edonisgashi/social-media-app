@@ -82,7 +82,7 @@ const Home = ({ isDark }) => {
         {posts?.length > 0 &&
           posts?.map((post, i) => {
             return (
-              <div key={i}>
+              <div key={i} className="col-8 col-sm-12 ">
                 {post.user ? <span>{post.user}</span> : null}
                 <br />
                 <span className="text-muted">
@@ -96,7 +96,7 @@ const Home = ({ isDark }) => {
                 </div>
                 <div className="actions d-flex flex-column justify-content-start my-3 align-items-start">
                   <p className="text-muted">{post?.likes}</p>
-                  <div className="d-flex justify-content-start">
+                  <div className="d-flex flex-wrap col-6 justify-content-start ">
                     <button
                       className={`btn btn-${
                         isDark ? "outline-light" : " none"
@@ -124,7 +124,7 @@ const Home = ({ isDark }) => {
                       type="textarea"
                       className={`${
                         isDark ? "bg-dark text-light" : "bg-light text-dark"
-                      } border-${isDark ? "light" : "dark"}`}
+                      } border-${isDark ? "light" : "dark"} my-1`}
                       placeholder="Add a comment"
                       onChange={(e) => setCommentText(e.target.value)}
                     />

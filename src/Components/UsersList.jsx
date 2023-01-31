@@ -12,7 +12,7 @@ const UsersList = ({ isDark }) => {
     }
   }, []);
   return (
-    <div className="shadow-lg">
+    <div className="shadow-lg d-none col-md-3">
       {userList?.map((user) => {
         return (
           <div className="d-flex align-items-center">

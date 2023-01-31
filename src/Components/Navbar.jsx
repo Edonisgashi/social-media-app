@@ -19,7 +19,7 @@ const Navbar = ({ isDark, handleTheme }) => {
   };
   return (
     <nav
-      className={`d-flex align-items-center justify-content-around mb-5 py-4 shadow-lg
+      className={`d-flex align-items-center justify-content-around mb-5 col-12 py-4 shadow-lg
       ${!isDark ? "bg-primary" : "bg-dark bg-opacity-50"}`}
     >
       <Link to="/" className="text-decoration-none text-light">

@@ -29,7 +29,7 @@ const AddPost = ({ isDark }) => {
       <form
         onSubmit={addPost}
         action=""
-        className={`mt-2 mb-5 d-flex ${
+        className={`col-6 flex-wrap mt-2 mb-5 d-flex ${
           isDark ? "bg-dark text-light" : "bg-light text-dark"
         }`}
       >

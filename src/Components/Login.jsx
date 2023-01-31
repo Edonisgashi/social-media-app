@@ -21,7 +21,7 @@ const Login = ({ isDark }) => {
   return (
     <form
       onSubmit={handleLogIn}
-      className={`w-25 mx-auto py-3 px-5  shadow-lg bg-${
+      className={`col-10 col-md-4 mx-auto py-3 px-5  shadow-lg bg-${
         isDark ? "dark" : "light"
       }`}
     >

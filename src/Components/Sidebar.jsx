@@ -50,7 +50,7 @@ const Sidebar = (props) => {
           </h2>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <ul className="d-none d-md-flex flex-column">
+          <ul className="flex-column">
             <li className="nav-item mb-4">
               <Link
                 to={`profile/${currentUser?.uid}`}
