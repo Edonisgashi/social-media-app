@@ -20,45 +20,40 @@ const App = () => {
     setIsDark(!isDark);
   };
   return (
-    <>
-      <div
-        className={`${
-          isDark ? "bg-dark text-light" : "bg-light text-dark"
-        } min-vh-100`}
-      >
-        <AppContext>
-          <Router>
-            <Navbar isDark={isDark} handleTheme={handleTheme} />
+    <div
+      className={` ${
+        isDark ? "bg-dark text-light" : "bg-light text-dark"
+      } min-vh-100`}
+    >
+      <AppContext>
+        <Router>
+          <Navbar isDark={isDark} handleTheme={handleTheme} />
 
-            <Routes>
-              <Route path="/" element={<Home isDark={isDark} />} />
-              <Route path="/login" element={<Login isDark={isDark} />} />
-              <Route path="/register" element={<Register isDark={isDark} />} />
-              <Route
-                path="/profile/:id"
-                element={<Profile isDark={isDark} />}
-              />
-              <Route
-                path="/:profile/newpost"
-                element={<ProtectedRoute component={AddPost} />}
-              />
-              <Route
-                path="/:profile/friends"
-                element={<ProtectedRoute component={Friends} />}
-              />
-              <Route
-                path="/:profile/saved"
-                element={<ProtectedRoute component={SavedPosts} />}
-              />
-              <Route
-                path="/:profile/groups"
-                element={<ProtectedRoute component={Groups} />}
-              />
-            </Routes>
-          </Router>
-        </AppContext>
-      </div>
-    </>
+          <Routes>
+            <Route path="/" element={<Home isDark={isDark} />} />
+            <Route path="/login" element={<Login isDark={isDark} />} />
+            <Route path="/register" element={<Register isDark={isDark} />} />
+            <Route path="/profile/:id" element={<Profile isDark={isDark} />} />
+            <Route
+              path="/:profile/newpost"
+              element={<ProtectedRoute component={AddPost} />}
+            />
+            <Route
+              path="/:profile/friends"
+              element={<ProtectedRoute component={Friends} />}
+            />
+            <Route
+              path="/:profile/saved"
+              element={<ProtectedRoute component={SavedPosts} />}
+            />
+            <Route
+              path="/:profile/groups"
+              element={<ProtectedRoute component={Groups} />}
+            />
+          </Routes>
+        </Router>
+      </AppContext>
+    </div>
   );
 };
 export default App;

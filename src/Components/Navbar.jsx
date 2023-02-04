@@ -1,7 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CiDark } from "react-icons/ci";
-import { MdOutlineLogout, MdOutlineLogin } from "react-icons/md";
+import {
+  MdOutlineLogout,
+  MdOutlineLogin,
+  MdOutlineNotificationsNone,
+} from "react-icons/md";
 import { RiRegisteredLine } from "react-icons/ri";
 import { VscHome } from "react-icons/vsc";
 import { ImProfile } from "react-icons/im";
@@ -19,8 +23,13 @@ const Navbar = ({ isDark, handleTheme }) => {
   };
   return (
     <nav
-      className={`d-flex align-items-center justify-content-around mb-5 col-12 py-4 shadow-lg
+      className={`d-flex align-items-center justify-content-around mb-5 w-100 py-4 shadow-lg
       ${!isDark ? "bg-primary" : "bg-dark bg-opacity-50"}`}
+      style={{
+        "@media (min-width: 576px)": {
+          maxWidth: "50%",
+        },
+      }}
     >
       <Link to="/" className="text-decoration-none text-light">
         <h3 className="d-flex align-items-center">
@@ -47,15 +56,10 @@ const Navbar = ({ isDark, handleTheme }) => {
         </>
       ) : (
         <>
-          <Link
-            to={`profile/${currentUser?.uid}`}
-            className="text-decoration-none text-light"
-          >
+          <Link className="text-decoration-none text-light">
             <h3 className="d-flex align-items-center ">
-              <ImProfile />{" "}
-              <span className="d-none d-lg-flex mx-1">
-                {currentUser?.displayName}
-              </span>
+              <MdOutlineNotificationsNone />
+              <span className="d-none d-lg-flex mx-1">Notifications</span>
             </h3>
           </Link>
           <Link

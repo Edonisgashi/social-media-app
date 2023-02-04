@@ -17,3 +17,6 @@ li a {
 li {
   list-style-type: none;
 }
+.modal-open-fixed {
+  overflow: hidden !important;
+}
