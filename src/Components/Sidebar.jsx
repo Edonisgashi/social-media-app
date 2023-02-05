@@ -18,7 +18,7 @@ const Sidebar = (props) => {
   console.log(currentUser);
   return (
     <>
-      <div class="d-flex align-items-start d-lg-none justify-content-center">
+      <div className="d-flex align-items-start d-lg-none justify-content-center">
         <button
           className={`btn btn-outline-${
             props.isDark ? "light" : "primary"

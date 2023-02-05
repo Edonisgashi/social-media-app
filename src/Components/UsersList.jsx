@@ -12,7 +12,12 @@ const UsersList = ({ isDark }) => {
   const addFriend = async (user) => {
     console.log(user);
     const userRef = doc(db, "users", activeUser?.id);
+    const friendRef = doc(db, "users", user.id);
     const userSnapshot = await getDoc(userRef);
+    const friendSnapshot = await getDoc(friendRef);
+    const friendData = friendSnapshot.data();
+    const firendFriendList = friendData.friends;
+    console.log(friendData);
     const userData = userSnapshot.data();
     const friendList = userData.friends;
 
@@ -20,10 +25,15 @@ const UsersList = ({ isDark }) => {
       ...userData,
       friends: [...friendList, user],
     };
+    const updateFriend = {
+      ...friendData,
+      friends: [...firendFriendList, activeUser],
+    };
     updateDoc(userRef, updateUser)
-      .then((response) =>
-        setActiveUser({ ...activeUser, friends: [...friendList, user] })
-      )
+      .then((response) => {
+        updateDoc(friendRef, updateFriend);
+        setActiveUser({ ...activeUser, friends: [...friendList, user] });
+      })
       .catch((err) => console.log(err));
   };
   useEffect(() => {

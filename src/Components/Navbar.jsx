@@ -26,7 +26,7 @@ const Navbar = ({ isDark, handleTheme }) => {
       className={`d-flex align-items-center justify-content-around mb-5 w-100 py-4 shadow-lg
       ${!isDark ? "bg-primary" : "bg-dark bg-opacity-50"}`}
       style={{
-        "@media (min-width: 576px)": {
+        "@media (minWidth: 576px)": {
           maxWidth: "50%",
         },
       }}
