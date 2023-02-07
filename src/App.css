@@ -12,11 +12,28 @@ li a {
 }
 .sidebar {
   max-height: 400px;
-  overflow-y: auto;
+  overflow-y: visible;
 }
 li {
   list-style-type: none;
 }
 .modal-open-fixed {
   overflow: hidden !important;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  transition: transform 0.3s ease-in-out;
+}
+
+.header--hidden {
+  transform: translateY(-100%);
+}
+
+.header--visible {
+  transform: translateY(0);
 }

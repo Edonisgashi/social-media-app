@@ -9,7 +9,7 @@ import { getDoc, doc, updateDoc } from "firebase/firestore";
 const Posts = (props) => {
   const [commentText, setCommentText] = useState("");
   const [showCommentInput, setShowCommentInput] = useState(false);
-  const { post, i, isDark, currentUser, fullWidth } = props;
+  const { post, i, isDark, activeUser, fullWidth } = props;
   const [showModal, setShowModal] = useState(false);
 
   const [comments, setComments] = useState([]);
@@ -52,7 +52,7 @@ const Posts = (props) => {
     setShowModal(false);
   };
 
-  const commentUser = currentUser?.displayName;
+  const commentUser = activeUser?.username;
   const addComent = (id) => {
     const postToComment = doc(db, "posts", id);
     if (commentText !== "") {
@@ -98,7 +98,7 @@ const Posts = (props) => {
               isDark ? "outline-light" : " none"
             } d-flex border-0`}
             onClick={(e) => addLike(post.id, i, "like")}
-            disabled={currentUser === null}
+            disabled={activeUser === null}
           >
             <AiOutlineLike className="mx-1" />
             Like
@@ -109,7 +109,7 @@ const Posts = (props) => {
               isDark ? "outline-light" : " none"
             } d-flex border-0`}
             onClick={(e) => addLike(post.id, i, "dislike")}
-            disabled={currentUser === null}
+            disabled={activeUser === null}
           >
             <AiOutlineDislike className="mx-1" />
             Dislike
@@ -119,7 +119,7 @@ const Posts = (props) => {
               isDark ? "outline-light" : " none"
             } d-flex border-0`}
             onClick={() => setShowCommentInput(true)}
-            disabled={currentUser === null}
+            disabled={activeUser === null}
           >
             <MdOutlineComment className="mx-1" />
             Comment
@@ -143,7 +143,7 @@ const Posts = (props) => {
                   isDark ? "outline-light" : "outline-primary"
                 } border-${isDark ? "light" : "dark"}`}
                 onClick={() => addComent(post.id)}
-                disabled={currentUser === null}
+                disabled={activeUser === null}
               >
                 <AiOutlineSend />
               </button>
@@ -154,7 +154,7 @@ const Posts = (props) => {
         <button
           className={`btn btn-outline-${isDark ? "light" : "primary"} w-75`}
           onClick={() => handleShowModal(post.id)}
-          disabled={currentUser === null}
+          disabled={activeUser === null}
         >
           Show Comments
           <span className="mx-1">{post.comments.length}</span>

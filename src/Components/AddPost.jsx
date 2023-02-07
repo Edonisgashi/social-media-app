@@ -1,18 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
-import {
-  addDoc,
-  doc,
-  getDoc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import React, { useContext, useState } from "react";
+import { addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { postsRef, db } from "../config/firebase";
 import { appContext } from "../Context/AppContext";
 const AddPost = ({ isDark }) => {
   const [text, setText] = useState("");
-  const [activeUser, setActiveUser] = useState();
   const [photo, setPhoto] = useState();
-  const { currentUser, users } = useContext(appContext);
+  const { activeUser } = useContext(appContext);
 
   const addPost = async (e) => {
     e.preventDefault();
@@ -21,13 +14,12 @@ const AddPost = ({ isDark }) => {
     const userData = userSnapshot.data();
     const currentPosts = userData.posts;
     const currentDate = new Date();
-    console.log(currentPosts);
-    console.log(currentUser);
+
     const post = {
       likes: 0,
-      postID: currentUser.uid,
+      postID: activeUser.userID,
       title: text,
-      user: currentUser.displayName,
+      user: activeUser.username,
       comments: [],
       postedTime: currentDate,
     };
@@ -45,10 +37,7 @@ const AddPost = ({ isDark }) => {
         .catch((error) => console.log(error));
     }
   };
-  useEffect(() => {
-    setActiveUser(users.find((user) => user.userID === currentUser.uid));
-    console.log(activeUser);
-  }, []);
+
   return (
     <>
       <form

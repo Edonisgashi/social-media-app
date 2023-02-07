@@ -10,7 +10,7 @@ const AppContext = ({ children }) => {
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
-
+  const [activeUser, setActiveUser] = useState(null);
   const fetchUsers = async () => {
     await onSnapshot(usersRef, (snapshot) => {
       const users = [];
@@ -32,9 +32,7 @@ const AppContext = ({ children }) => {
       setPosts(posts);
     });
   };
-  const setActiveUser = (user) => {
-    setCurrentUser(user);
-  };
+
   console.log(users);
   useEffect(() => {
     fetchUsers();
@@ -42,15 +40,17 @@ const AppContext = ({ children }) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user);
-        console.log(user);
+        setActiveUser(users.find((user) => currentUser?.uid === user.userID));
       } else {
         setCurrentUser(null);
       }
     });
-  }, [loader]);
+  }, [activeUser]);
 
   return (
-    <appContext.Provider value={{ users, posts, error, currentUser }}>
+    <appContext.Provider
+      value={{ users, posts, error, currentUser, activeUser, setActiveUser }}
+    >
       {children}
     </appContext.Provider>
   );

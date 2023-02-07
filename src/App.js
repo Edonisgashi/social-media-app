@@ -8,7 +8,6 @@ import Friends from "./Components/Friends";
 import AppContext from "./Context/AppContext";
 import Profile from "./Components/Profile";
 import SavedPosts from "./Components/SavedPosts";
-import Groups from "./Components/Groups";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -45,10 +44,6 @@ const App = () => {
             <Route
               path="/:profile/saved"
               element={<ProtectedRoute component={SavedPosts} />}
-            />
-            <Route
-              path="/:profile/groups"
-              element={<ProtectedRoute component={Groups} />}
             />
           </Routes>
         </Router>

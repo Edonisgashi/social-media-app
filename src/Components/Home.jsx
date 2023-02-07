@@ -8,7 +8,7 @@ import UsersList from "./UsersList";
 import Posts from "./Posts";
 
 const Home = ({ isDark }) => {
-  const { posts, currentUser, users } = useContext(appContext);
+  const { posts, currentUser, users, activeUser } = useContext(appContext);
 
   return (
     <div className=" col-12">
@@ -17,7 +17,7 @@ const Home = ({ isDark }) => {
         style={{ overflowX: "hidden" }}
       >
         <Sidebar isDark={isDark} />
-        <div className="timeline d-flex flex-column col-10 col-lg-8 align-items-center my-5">
+        <div className="timeline d-flex flex-column col-10 col-lg-8 align-items-center my-5 mx-auto">
           {currentUser !== null ? (
             <AddPost className="position-top" isDark={isDark} />
           ) : null}
@@ -28,7 +28,7 @@ const Home = ({ isDark }) => {
                   post={post}
                   i={i}
                   isDark={isDark}
-                  currentUser={currentUser}
+                  activeUser={activeUser}
                 />
               );
             })}

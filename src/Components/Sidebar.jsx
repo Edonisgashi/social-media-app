@@ -1,23 +1,27 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import Menu from "./Menu";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { MdMenu, MdClose } from "react-icons/md";
 import { appContext } from "../Context/AppContext";
 const Sidebar = (props) => {
   const [showMenu, setShowMenu] = useState(false);
-  const { currentUser } = useContext(appContext);
-  const menuRef = useRef(null);
+  const { activeUser } = useContext(appContext);
 
+  console.log(activeUser);
   const handleMenu = () => {
     setShowMenu(true);
-    console.log(menuRef.current);
   };
   const handleClose = () => {
     setShowMenu(false);
   };
-  console.log(currentUser);
+
   return (
-    <>
+    <div
+      style={{
+        position: "fixed",
+        top: 120,
+      }}
+    >
       <div className="d-flex align-items-start d-lg-none justify-content-center">
         <button
           className={`btn btn-outline-${
@@ -47,13 +51,13 @@ const Sidebar = (props) => {
           </h2>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Menu currentUser={currentUser} />
+          <Menu activeUser={activeUser} />
         </Offcanvas.Body>
       </Offcanvas>
       <div className="d-none d-lg-block">
-        <Menu currentUser={currentUser} />
+        <Menu activeUser={activeUser} />
       </div>
-    </>
+    </div>
   );
 };
 

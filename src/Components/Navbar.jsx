@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CiDark } from "react-icons/ci";
 import {
@@ -15,6 +15,23 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 const Navbar = ({ isDark, handleTheme }) => {
   const { currentUser } = useContext(appContext);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      const isVisible = prevScrollPos > currentScrollPos;
+      setPrevScrollPos(currentScrollPos);
+      setVisible(isVisible);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [prevScrollPos]);
+
   const navigate = useNavigate();
   const signOutUser = () => {
     signOut(auth)
@@ -23,7 +40,9 @@ const Navbar = ({ isDark, handleTheme }) => {
   };
   return (
     <nav
-      className={`d-flex align-items-center justify-content-around mb-5 w-100 py-4 shadow-lg
+      className={`header d-flex align-items-center justify-content-around mb-5 w-100 py-4 shadow-lg  ${
+        visible ? "header--visible" : "header--hidden"
+      }
       ${!isDark ? "bg-primary" : "bg-dark bg-opacity-50"}`}
       style={{
         "@media (minWidth: 576px)": {

@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { appContext } from "../Context/AppContext";
 import { IoPersonAddOutline } from "react-icons/io5";
 import { SlUserFollowing } from "react-icons/sl";
-import { db, usersRef } from "../config/firebase";
+import { db } from "../config/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 const UsersList = ({ isDark }) => {
   const [userList, setUserList] = useState([]);
-  const [activeUser, setActiveUser] = useState();
   const [friend, setFriend] = useState();
-  const { users, currentUser } = useContext(appContext);
+  const { users, activeUser, setActiveUser } = useContext(appContext);
   const addFriend = async (user) => {
     console.log(user);
     const userRef = doc(db, "users", activeUser?.id);
@@ -36,20 +35,35 @@ const UsersList = ({ isDark }) => {
       })
       .catch((err) => console.log(err));
   };
-  useEffect(() => {
-    if (currentUser !== null) {
-      setUserList(users.filter((user) => user.userID !== currentUser.uid));
-      console.log(userList);
-      setActiveUser(users.find((user) => currentUser.uid === user.userID));
-      console.log(activeUser);
+  const filteredUserList = useMemo(() => {
+    if (activeUser !== null) {
+      return users.filter(
+        (user) =>
+          user.userID !== activeUser?.userID &&
+          activeUser?.friends?.includes(user)
+      );
     }
-  }, []);
+    return [];
+  }, [activeUser, users]);
+
+  useEffect(() => {
+    setUserList(filteredUserList);
+  }, [filteredUserList]);
+
   return (
-    <div className="shadow-lg d-none d-lg-flex flex-column align-items-start col-md-2">
+    <div
+      className="shadow-lg d-none d-lg-flex flex-column align-items-start col-md-2"
+      style={{
+        position: "fixed",
+        top: 120,
+        right: 0,
+        minHeight: "70vh",
+      }}
+    >
       <p className="mx-auto text-muted">People you may know</p>
       {userList?.map((user) => {
         return (
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center" key={user?.userID}>
             <button
               className={`btn btn-outline-${
                 isDark ? "light" : "primary"

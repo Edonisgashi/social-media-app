@@ -4,16 +4,15 @@ import { appContext } from "../Context/AppContext";
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const [showComponent, setShowComponent] = useState(false);
   const navigate = useNavigate();
-  const { currentUser } = useContext(appContext);
-  console.log(currentUser);
+  const { activeUser } = useContext(appContext);
 
   useEffect(() => {
-    if (currentUser !== null) {
+    if (activeUser !== null) {
       setShowComponent(true);
     } else {
       navigate("/login");
     }
-  }, [currentUser]);
+  }, [activeUser]);
 
   return <>{showComponent ? <Component /> : null}</>;
 };

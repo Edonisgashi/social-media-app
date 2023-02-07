@@ -1,79 +1,42 @@
 import React from "react";
 import { BsBookmark } from "react-icons/bs";
-import { Link } from "react-router-dom";
 import { ImProfile } from "react-icons/im";
 import { FaUserFriends } from "react-icons/fa";
-import { MdGroups, MdAdd, MdOutlineModeEdit } from "react-icons/md";
-const Menu = ({ currentUser }) => {
+import { MdAdd, MdOutlineModeEdit } from "react-icons/md";
+import MenuItem from "./MenuItem";
+const Menu = ({ activeUser }) => {
   return (
     <ul className="flex-column align-items-start">
-      <li className="nav-item mb-4">
-        <Link
-          to={`profile/${currentUser?.uid}`}
-          style={{
-            pointerEvents: currentUser === null ? "none" : "auto",
-            color: currentUser === null ? "grey" : "#007bff",
-          }}
-        >
-          <ImProfile className="mx-2" />{" "}
-          {currentUser !== null ? <span>{currentUser.displayName}</span> : null}
-        </Link>
-      </li>
-      <li className="nav-item mb-4">
-        <Link
-          to={`/${currentUser?.displayName}/friends`}
-          style={{
-            pointerEvents: currentUser === null ? "none" : "auto",
-            color: currentUser === null ? "grey" : "#007bff",
-          }}
-        >
-          <FaUserFriends className="mx-2" /> Friends
-        </Link>
-      </li>
-      <li className="nav-item mb-4">
-        <Link
-          to={`/${currentUser?.displayName}/newpost`}
-          style={{
-            pointerEvents: currentUser === null ? "none" : "auto",
-            color: currentUser === null ? "grey" : "#007bff",
-          }}
-        >
-          <MdAdd className="mx-2" /> New post
-        </Link>
-      </li>
-      <li className="nav-item mb-4">
-        <Link
-          to={`/${currentUser?.displayName}/saved`}
-          style={{
-            pointerEvents: currentUser === null ? "none" : "auto",
-            color: currentUser === null ? "grey" : "#007bff",
-          }}
-        >
-          <BsBookmark className="mx-2" /> Saved
-        </Link>
-      </li>
-
-      <li className="nav-item mb-4">
-        <Link
-          to={`/${currentUser?.displayName}/groups`}
-          style={{
-            pointerEvents: currentUser === null ? "none" : "auto",
-            color: currentUser === null ? "grey" : "#007bff",
-          }}
-        >
-          <MdGroups className="mx-2" /> Groups
-        </Link>
-      </li>
-      <li className="nav-item mb-4">
-        <Link
-          style={{
-            pointerEvents: currentUser === null ? "none" : "auto",
-            color: currentUser === null ? "grey" : "#007bff",
-          }}
-        >
-          <MdOutlineModeEdit className="mx-2" /> Edit profile
-        </Link>
-      </li>
+      <MenuItem
+        to={`profile/${activeUser?.userID}`}
+        Icon={ImProfile}
+        text={`${activeUser !== null ? activeUser?.username : "Profile"}`}
+        activeUser={activeUser}
+      />
+      <MenuItem
+        to={`/${activeUser?.username}/friends`}
+        Icon={FaUserFriends}
+        activeUser={activeUser}
+        text="Friends"
+      />
+      <MenuItem
+        to={`/${activeUser?.username}/newpost`}
+        Icon={MdAdd}
+        activeUser={activeUser}
+        text="New Post"
+      />
+      <MenuItem
+        to={`/${activeUser?.username}/saved`}
+        Icon={BsBookmark}
+        activeUser={activeUser}
+        text="Bookmarks"
+      />
+      <MenuItem
+        to="/editProfile"
+        Icon={MdOutlineModeEdit}
+        activeUser={activeUser}
+        text="Edit Profile"
+      />
     </ul>
   );
 };
