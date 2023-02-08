@@ -98,7 +98,7 @@ const Posts = (props) => {
               isDark ? "outline-light" : " none"
             } d-flex border-0`}
             onClick={(e) => addLike(post.id, i, "like")}
-            disabled={activeUser === null}
+            disabled={!activeUser}
           >
             <AiOutlineLike className="mx-1" />
             Like
@@ -109,7 +109,7 @@ const Posts = (props) => {
               isDark ? "outline-light" : " none"
             } d-flex border-0`}
             onClick={(e) => addLike(post.id, i, "dislike")}
-            disabled={activeUser === null}
+            disabled={!activeUser}
           >
             <AiOutlineDislike className="mx-1" />
             Dislike
@@ -119,7 +119,7 @@ const Posts = (props) => {
               isDark ? "outline-light" : " none"
             } d-flex border-0`}
             onClick={() => setShowCommentInput(true)}
-            disabled={activeUser === null}
+            disabled={!activeUser}
           >
             <MdOutlineComment className="mx-1" />
             Comment
@@ -154,7 +154,7 @@ const Posts = (props) => {
         <button
           className={`btn btn-outline-${isDark ? "light" : "primary"} w-75`}
           onClick={() => handleShowModal(post.id)}
-          disabled={activeUser === null}
+          disabled={!activeUser}
         >
           Show Comments
           <span className="mx-1">{post.comments.length}</span>

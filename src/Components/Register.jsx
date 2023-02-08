@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { addDoc, serverTimestamp } from "firebase/firestore";
 import { usersRef, auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { appContext } from "../Context/AppContext";
 
 const Register = ({ isDark }) => {
   const [birthDate, setBirthDate] = useState();
@@ -10,7 +11,11 @@ const Register = ({ isDark }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState();
   const [username, setUserame] = useState();
+  const [isRegistered, setIsRegistered] = useState(false);
   const [error, setError] = useState();
+
+  const { activeUser, users, currentUser, setActiveUser } =
+    useContext(appContext);
 
   const registerUserForm = async (e) => {
     e.preventDefault();
@@ -35,11 +40,15 @@ const Register = ({ isDark }) => {
           photoURL: cred.user.photoURL,
           isEmailVerified: cred.user.emailVerified,
         };
+        setIsRegistered(true);
         addDoc(usersRef, userObj);
       })
       .catch((err) => console.log(err.message));
   };
-
+  useEffect(() => {
+    setActiveUser(users.find((user) => user.userID === currentUser?.uid));
+    console.log(activeUser, currentUser);
+  }, [isRegistered]);
   return (
     <form
       onSubmit={registerUserForm}

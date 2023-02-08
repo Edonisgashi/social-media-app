@@ -43,7 +43,7 @@ const AddPost = ({ isDark }) => {
       <form
         onSubmit={addPost}
         action=""
-        className={`col-6 flex-wrap mt-2 mb-5 d-flex ${
+        className={`col-6 flex-wrap mt-2 mb-5 d-flex flex-column ${
           isDark ? "bg-dark text-light" : "bg-light text-dark"
         }`}
       >
@@ -57,15 +57,22 @@ const AddPost = ({ isDark }) => {
           onChange={(e) => setText(e.target.value)}
         ></textarea>
         <div className="d-flex flex-column">
+          <label
+            htmlFor="file"
+            className={`btn btn-outline-${
+              isDark ? "light" : "primary"
+            } col-3 my-2`}
+          >
+            Choose File
+          </label>
           <input
             type="file"
-            className={`m-2 bg-${isDark ? "dark " : "light"}`}
+            id="file"
+            className={`d-none`}
             onChange={(e) => setPhoto(e.target.files[0])}
           />
           <button
-            className={`btn btn-outline-${
-              isDark ? "light" : "primary"
-            } col-6 col-sm-8 m-2`}
+            className={`btn btn-outline-${isDark ? "light" : "primary"} col-3 `}
           >
             Post
           </button>

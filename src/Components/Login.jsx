@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
+import { appContext } from "../Context/AppContext";
 const Login = ({ isDark }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState("");
   const [userLoggedIn, setUserLoggedIn] = useState(null);
   const navigate = useNavigate();
 
+  const { users, setActiveUser } = useContext(appContext);
+
   const handleLogIn = async (e) => {
     e.preventDefault();
     await signInWithEmailAndPassword(auth, email, password)
       .then((credentials) => {
-        console.log(credentials.user);
+        setActiveUser(
+          users.find((user) => user?.userID === credentials.user.uid)
+        );
+
         e.target.reset();
       })
       .catch((error) => console.log(error.message));

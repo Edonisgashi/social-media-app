@@ -6,7 +6,7 @@ import { appContext } from "../Context/AppContext";
 const Sidebar = (props) => {
   const [showMenu, setShowMenu] = useState(false);
   const { activeUser } = useContext(appContext);
-
+  const { handleTheme } = props;
   console.log(activeUser);
   const handleMenu = () => {
     setShowMenu(true);
@@ -51,11 +51,11 @@ const Sidebar = (props) => {
           </h2>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Menu activeUser={activeUser} />
+          <Menu activeUser={activeUser} handleTheme={handleTheme} />
         </Offcanvas.Body>
       </Offcanvas>
       <div className="d-none d-lg-block">
-        <Menu activeUser={activeUser} />
+        <Menu activeUser={activeUser} handleTheme={handleTheme} />
       </div>
     </div>
   );

@@ -49,7 +49,14 @@ const AppContext = ({ children }) => {
 
   return (
     <appContext.Provider
-      value={{ users, posts, error, currentUser, activeUser, setActiveUser }}
+      value={{
+        users,
+        posts,
+        error,
+        currentUser,
+        activeUser,
+        setActiveUser,
+      }}
     >
       {children}
     </appContext.Provider>

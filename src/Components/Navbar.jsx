@@ -1,19 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { CiDark } from "react-icons/ci";
 import {
-  MdOutlineLogout,
   MdOutlineLogin,
   MdOutlineNotificationsNone,
+  MdPersonSearch,
 } from "react-icons/md";
 import { RiRegisteredLine } from "react-icons/ri";
-import { VscHome } from "react-icons/vsc";
-import { ImProfile } from "react-icons/im";
+
 import { appContext } from "../Context/AppContext";
-import { auth } from "../config/firebase";
-import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-const Navbar = ({ isDark, handleTheme }) => {
+
+const Navbar = ({ isDark }) => {
   const { currentUser } = useContext(appContext);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -32,18 +28,12 @@ const Navbar = ({ isDark, handleTheme }) => {
     };
   }, [prevScrollPos]);
 
-  const navigate = useNavigate();
-  const signOutUser = () => {
-    signOut(auth)
-      .then((response) => navigate("/login"))
-      .catch((error) => console.log(error));
-  };
   return (
     <nav
       className={`header d-flex align-items-center justify-content-around mb-5 w-100 py-4 shadow-lg  ${
         visible ? "header--visible" : "header--hidden"
       }
-      ${!isDark ? "bg-primary" : "bg-dark bg-opacity-50"}`}
+      ${!isDark ? "bg-primary " : "bg-dark bg-opacity-75"}`}
       style={{
         "@media (minWidth: 576px)": {
           maxWidth: "50%",
@@ -52,8 +42,7 @@ const Navbar = ({ isDark, handleTheme }) => {
     >
       <Link to="/" className="text-decoration-none text-light">
         <h3 className="d-flex align-items-center">
-          <VscHome />
-          <span className="d-none d-lg-flex mx-1">Home Page</span>{" "}
+          <span class="material-icons">diversity_3</span>
         </h3>
       </Link>
       <br />
@@ -81,30 +70,14 @@ const Navbar = ({ isDark, handleTheme }) => {
               <span className="d-none d-lg-flex mx-1">Notifications</span>
             </h3>
           </Link>
-          <Link
-            to="/"
-            className="text-decoration-none text-light"
-            onClick={signOutUser}
-          >
+          <Link className="text-decoration-none text-light">
             <h3 className="d-flex align-items-center ">
-              <MdOutlineLogout />{" "}
-              <span className="d-none d-lg-flex mx-1">Logout</span>
+              <MdPersonSearch />
+              <span className="d-none d-lg-flex mx-1">Search</span>
             </h3>
           </Link>
         </>
       )}
-      <div className="themeBtn">
-        <button
-          onClick={handleTheme}
-          className="btn btn-none text-light"
-          disabled={currentUser === null}
-        >
-          {" "}
-          <h3>
-            <CiDark />
-          </h3>
-        </button>
-      </div>
     </nav>
   );
 };

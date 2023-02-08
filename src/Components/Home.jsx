@@ -7,7 +7,7 @@ import AddPost from "./AddPost";
 import UsersList from "./UsersList";
 import Posts from "./Posts";
 
-const Home = ({ isDark }) => {
+const Home = ({ isDark, handleTheme }) => {
   const { posts, currentUser, users, activeUser } = useContext(appContext);
 
   return (
@@ -16,7 +16,7 @@ const Home = ({ isDark }) => {
         className="d-flex justify-content-between"
         style={{ overflowX: "hidden" }}
       >
-        <Sidebar isDark={isDark} />
+        <Sidebar isDark={isDark} handleTheme={handleTheme} />
         <div className="timeline d-flex flex-column col-10 col-lg-8 align-items-center my-5 mx-auto">
           {currentUser !== null ? (
             <AddPost className="position-top" isDark={isDark} />

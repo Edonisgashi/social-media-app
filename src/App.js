@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./Components/Home";
 import Login from "./Components/Login";
 import Navbar from "./Components/Navbar";
 import Register from "./Components/Register";
 import Friends from "./Components/Friends";
-import AppContext from "./Context/AppContext";
+import AppContext, { appContext } from "./Context/AppContext";
 import Profile from "./Components/Profile";
 import SavedPosts from "./Components/SavedPosts";
 import ProtectedRoute from "./Components/ProtectedRoute";
@@ -26,10 +26,13 @@ const App = () => {
     >
       <AppContext>
         <Router>
-          <Navbar isDark={isDark} handleTheme={handleTheme} />
+          <Navbar isDark={isDark} />
 
           <Routes>
-            <Route path="/" element={<Home isDark={isDark} />} />
+            <Route
+              path="/"
+              element={<Home isDark={isDark} handleTheme={handleTheme} />}
+            />
             <Route path="/login" element={<Login isDark={isDark} />} />
             <Route path="/register" element={<Register isDark={isDark} />} />
             <Route path="/profile/:id" element={<Profile isDark={isDark} />} />
