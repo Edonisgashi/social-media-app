@@ -1,14 +1,12 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useContext } from "react";
 import { appContext } from "../Context/AppContext";
-import { db, auth } from "../config/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Sidebar from "./Sidebar";
 import AddPost from "./AddPost";
 import UsersList from "./UsersList";
 import Posts from "./Posts";
 
 const Home = ({ isDark, handleTheme }) => {
-  const { posts, currentUser, users, activeUser } = useContext(appContext);
+  const { posts, currentUser, activeUser } = useContext(appContext);
 
   return (
     <div className=" col-12">

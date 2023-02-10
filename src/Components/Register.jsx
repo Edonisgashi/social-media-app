@@ -22,7 +22,6 @@ const Register = ({ isDark }) => {
 
     await createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
-        console.log(cred.user);
         updateProfile(cred.user, { displayName: username });
         const userObj = {
           password: password,
@@ -47,7 +46,6 @@ const Register = ({ isDark }) => {
   };
   useEffect(() => {
     setActiveUser(users.find((user) => user.userID === currentUser?.uid));
-    console.log(activeUser, currentUser);
   }, [isRegistered]);
   return (
     <form

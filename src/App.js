@@ -12,6 +12,7 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AddPost from "./Components/AddPost";
+import Notifications from "./Components/Notifications";
 
 const App = () => {
   const [isDark, setIsDark] = useState(false);
@@ -47,6 +48,10 @@ const App = () => {
             <Route
               path="/:profile/saved"
               element={<ProtectedRoute component={SavedPosts} />}
+            />
+            <Route
+              path="/:user/notifications"
+              element={<ProtectedRoute component={Notifications} />}
             />
           </Routes>
         </Router>

@@ -6,19 +6,20 @@ import { db } from "../config/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 const UsersList = ({ isDark }) => {
   const [userList, setUserList] = useState([]);
-  const [friend, setFriend] = useState();
+
   const { users, activeUser, setActiveUser } = useContext(appContext);
   const addFriend = async (user) => {
-    console.log(user);
     const userRef = doc(db, "users", activeUser?.id);
     const friendRef = doc(db, "users", user.id);
     const userSnapshot = await getDoc(userRef);
     const friendSnapshot = await getDoc(friendRef);
     const friendData = friendSnapshot.data();
     const firendFriendList = friendData.friends;
-    console.log(friendData);
+    const friendNotifications = friendData.notifications;
     const userData = userSnapshot.data();
     const friendList = userData.friends;
+
+    const notification = `${userData.username} added you as friend`;
 
     const updateUser = {
       ...userData,
@@ -27,6 +28,10 @@ const UsersList = ({ isDark }) => {
     const updateFriend = {
       ...friendData,
       friends: [...firendFriendList, activeUser],
+      notifications: [
+        ...friendNotifications,
+        { notification: notification, read: false },
+      ],
     };
     updateDoc(userRef, updateUser)
       .then((response) => {

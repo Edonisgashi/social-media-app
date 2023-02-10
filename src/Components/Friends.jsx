@@ -6,10 +6,9 @@ const Friends = () => {
   const [activeUser, setActiveUser] = useState();
   const { users, currentUser } = useContext(appContext);
   const { profile } = useParams();
-  console.log(profile);
+
   useEffect(() => {
     setActiveUser(users?.find((user) => user?.userID === currentUser?.uid));
-    console.log(activeUser);
   }, [profile]);
   return (
     <>

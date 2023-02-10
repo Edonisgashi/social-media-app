@@ -61,3 +61,20 @@ li {
   /* Support for IE. */
   font-feature-settings: "liga";
 }
+
+/* .footer__container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  top: auto;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .footer__container {
+    display: none;
+  }
+} */

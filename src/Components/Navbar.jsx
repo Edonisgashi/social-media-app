@@ -10,7 +10,7 @@ import { RiRegisteredLine } from "react-icons/ri";
 import { appContext } from "../Context/AppContext";
 
 const Navbar = ({ isDark }) => {
-  const { currentUser } = useContext(appContext);
+  const { activeUser } = useContext(appContext);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(false);
 
@@ -46,7 +46,7 @@ const Navbar = ({ isDark }) => {
         </h3>
       </Link>
       <br />
-      {!currentUser ? (
+      {!activeUser ? (
         <>
           <Link to="/login" className="text-decoration-none text-light">
             <h3 className="d-flex align-items-center">
@@ -64,7 +64,10 @@ const Navbar = ({ isDark }) => {
         </>
       ) : (
         <>
-          <Link className="text-decoration-none text-light">
+          <Link
+            className="text-decoration-none text-light"
+            to="/user/notifications"
+          >
             <h3 className="d-flex align-items-center ">
               <MdOutlineNotificationsNone />
               <span className="d-none d-lg-flex mx-1">Notifications</span>
@@ -73,7 +76,13 @@ const Navbar = ({ isDark }) => {
           <Link className="text-decoration-none text-light">
             <h3 className="d-flex align-items-center ">
               <MdPersonSearch />
-              <span className="d-none d-lg-flex mx-1">Search</span>
+              <span className="d-none d-lg-flex mx-1">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="bg-transparent"
+                />
+              </span>
             </h3>
           </Link>
         </>

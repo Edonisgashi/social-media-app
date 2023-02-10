@@ -6,7 +6,6 @@ import { appContext } from "../Context/AppContext";
 const Login = ({ isDark }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState("");
-  const [userLoggedIn, setUserLoggedIn] = useState(null);
   const navigate = useNavigate();
 
   const { users, setActiveUser } = useContext(appContext);

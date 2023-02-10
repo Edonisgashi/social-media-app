@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
-import { AiOutlineLike, AiOutlineSend, AiOutlineDislike } from "react-icons/ai";
+import { AiOutlineSend, AiOutlineDislike } from "react-icons/ai";
 import { MdOutlineComment } from "react-icons/md";
 import { Modal } from "react-bootstrap";
 import SelectAction from "./SelectAction";
 import { db } from "../config/firebase";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
-
+import LikeButton from "./LikeButton";
 const Posts = (props) => {
   const [commentText, setCommentText] = useState("");
   const [showCommentInput, setShowCommentInput] = useState(false);
@@ -16,29 +16,6 @@ const Posts = (props) => {
 
   const inputRef = useRef(null);
 
-  const addLike = async (id, index, operator) => {
-    const postToLike = doc(db, "posts", id);
-    const userSnapshot = await getDoc(postToLike);
-    const userData = userSnapshot.data();
-    const currentLikes = userData.likes;
-
-    let updatedLikes;
-    if (operator === "like") {
-      updatedLikes = currentLikes + 1;
-    } else if (operator === "dislike") {
-      updatedLikes = currentLikes - 1;
-    }
-    if (updatedLikes >= 0) {
-      const updatedPost = {
-        ...userData,
-        likes: updatedLikes,
-      };
-
-      updateDoc(postToLike, updatedPost);
-    } else {
-      alert("Likes cannot be under 0");
-    }
-  };
   const handleShowModal = (id) => {
     setShowModal(true);
 
@@ -93,27 +70,7 @@ const Posts = (props) => {
       <div className="actions d-flex flex-column justify-content-start my-3 align-items-start">
         <p className="text-muted">{post?.likes}</p>
         <div className="d-flex flex-wrap col-6 justify-content-start ">
-          <button
-            className={`btn btn-${
-              isDark ? "outline-light" : " none"
-            } d-flex border-0`}
-            onClick={(e) => addLike(post.id, i, "like")}
-            disabled={!activeUser}
-          >
-            <AiOutlineLike className="mx-1" />
-            Like
-          </button>
-
-          <button
-            className={`btn btn-${
-              isDark ? "outline-light" : " none"
-            } d-flex border-0`}
-            onClick={(e) => addLike(post.id, i, "dislike")}
-            disabled={!activeUser}
-          >
-            <AiOutlineDislike className="mx-1" />
-            Dislike
-          </button>
+          <LikeButton post={post} isDark={isDark} activeUser={activeUser} />
           <button
             className={`btn btn-${
               isDark ? "outline-light" : " none"
@@ -124,7 +81,7 @@ const Posts = (props) => {
             <MdOutlineComment className="mx-1" />
             Comment
           </button>
-          <SelectAction isDark={isDark} />
+          <SelectAction isDark={isDark} post={post} />
 
           {showCommentInput ? (
             <div className="d-flex ">

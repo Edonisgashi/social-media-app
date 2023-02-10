@@ -17,50 +17,52 @@ const Menu = ({ activeUser, handleTheme }) => {
       .catch((error) => console.log(error));
   };
   return (
-    <ul className="flex-column align-items-start">
-      <MenuItem
-        to={`profile/${activeUser?.userID}`}
-        Icon={ImProfile}
-        text={`${activeUser ? activeUser?.username : "Profile"}`}
-        activeUser={activeUser}
-      />
-      <MenuItem
-        to={`/${activeUser?.username}/friends`}
-        Icon={FaUserFriends}
-        activeUser={activeUser}
-        text="Friends"
-      />
-      <MenuItem
-        to={`/${activeUser?.username}/newpost`}
-        Icon={MdAdd}
-        activeUser={activeUser}
-        text="New Post"
-      />
-      <MenuItem
-        to={`/${activeUser?.username}/saved`}
-        Icon={BsBookmark}
-        activeUser={activeUser}
-        text="Bookmarks"
-      />
-      <MenuItem
-        to="/editProfile"
-        Icon={MdOutlineModeEdit}
-        activeUser={activeUser}
-        text="Edit Profile"
-      />
-      <MenuItem
-        to="/"
-        Icon={MdOutlineLogout}
-        activeUser={activeUser}
-        text="Log out"
-        signOutUser={signOutUser}
-      />
-      <li className="nav-item mb-4">
-        <h3 className="text-center">
-          <CiDark onClick={handleTheme} />
-        </h3>
-      </li>
-    </ul>
+    <div className="footer__container">
+      <ul className="flex-column align-items-start">
+        <MenuItem
+          to={`profile/${activeUser?.userID}`}
+          Icon={ImProfile}
+          text={`${activeUser ? activeUser?.username : "Profile"}`}
+          activeUser={activeUser}
+        />
+        <MenuItem
+          to={`/${activeUser?.username}/friends`}
+          Icon={FaUserFriends}
+          activeUser={activeUser}
+          text="Friends"
+        />
+        <MenuItem
+          to={`/${activeUser?.username}/newpost`}
+          Icon={MdAdd}
+          activeUser={activeUser}
+          text="New Post"
+        />
+        <MenuItem
+          to={`/${activeUser?.username}/saved`}
+          Icon={BsBookmark}
+          activeUser={activeUser}
+          text="Bookmarks"
+        />
+        <MenuItem
+          to="/editProfile"
+          Icon={MdOutlineModeEdit}
+          activeUser={activeUser}
+          text="Edit Profile"
+        />
+        <MenuItem
+          to="/"
+          Icon={MdOutlineLogout}
+          activeUser={activeUser}
+          text="Log out"
+          signOutUser={signOutUser}
+        />
+        <li className="nav-item mb-4">
+          <h3 className="text-center">
+            <CiDark onClick={handleTheme} />
+          </h3>
+        </li>
+      </ul>
+    </div>
   );
 };
 

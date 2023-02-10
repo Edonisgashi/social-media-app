@@ -7,7 +7,6 @@ import Modal from "react-bootstrap/Modal";
 import Posts from "./Posts";
 const Profile = ({ isDark }) => {
   const [userProfile, setUserProfile] = useState(null);
-  const [userPosts, setUserPosts] = useState([]);
   const [showFriends, setShowFriends] = useState(false);
   const [showPosts, setShowPosts] = useState(false);
 
@@ -16,17 +15,15 @@ const Profile = ({ isDark }) => {
 
   const handleClose = () => setShowFriends(false);
   const handleShow = () => setShowFriends(true);
-  const { users, currentUser, posts } = useContext(appContext);
+  const { users, currentUser, activeUser, posts } = useContext(appContext);
   const { id } = useParams();
-  console.log(users);
+
   useEffect(() => {
     if (currentUser) {
       setUserProfile(users.find((user) => user.userID === id));
-      setUserPosts(posts.filter((post) => post.postID === id));
     }
   }, []);
-  console.log(userProfile);
-  console.log(userPosts);
+
   return (
     <div className="container profile-page">
       <div className="header d-flex align-items-center my-5">
@@ -132,9 +129,9 @@ const Profile = ({ isDark }) => {
                     return (
                       <Posts
                         post={post}
-                        i={i}
+                        key={i}
                         isDark={isDark}
-                        currentUser={currentUser}
+                        activeUser={activeUser}
                         fullWidth="fullWidth"
                       />
                     );

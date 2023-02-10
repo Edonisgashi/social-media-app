@@ -7,7 +7,7 @@ const Sidebar = (props) => {
   const [showMenu, setShowMenu] = useState(false);
   const { activeUser } = useContext(appContext);
   const { handleTheme } = props;
-  console.log(activeUser);
+
   const handleMenu = () => {
     setShowMenu(true);
   };

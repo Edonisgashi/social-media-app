@@ -25,7 +25,6 @@ const AddPost = ({ isDark }) => {
     };
     if (text !== "") {
       addDoc(postsRef, post).then((response) => {
-        console.log(response);
         e.target.reset();
       });
       const updatedUser = {
