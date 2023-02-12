@@ -24,7 +24,7 @@ const Home = ({ isDark, handleTheme }) => {
               return (
                 <Posts
                   post={post}
-                  i={i}
+                  key={i}
                   isDark={isDark}
                   activeUser={activeUser}
                 />

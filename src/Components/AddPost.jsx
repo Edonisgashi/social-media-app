@@ -2,6 +2,13 @@ import React, { useContext, useState } from "react";
 import { addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { postsRef, db } from "../config/firebase";
 import { appContext } from "../Context/AppContext";
+import {
+  Form,
+  Button,
+  InputGroup,
+  FormControl,
+  Container,
+} from "react-bootstrap";
 const AddPost = ({ isDark }) => {
   const [text, setText] = useState("");
   const [photo, setPhoto] = useState();
@@ -39,44 +46,39 @@ const AddPost = ({ isDark }) => {
 
   return (
     <>
-      <form
-        onSubmit={addPost}
-        action=""
-        className={`col-6 flex-wrap mt-2 mb-5 d-flex flex-column ${
-          isDark ? "bg-dark text-light" : "bg-light text-dark"
-        }`}
-      >
-        <textarea
-          name=""
-          id=""
-          cols="50"
-          rows="3"
-          placeholder="What's on your mind?"
-          className={`bg-${isDark ? "dark text-light" : "light text-dark"}`}
-          onChange={(e) => setText(e.target.value)}
-        ></textarea>
-        <div className="d-flex flex-column">
-          <label
-            htmlFor="file"
-            className={`btn btn-outline-${
-              isDark ? "light" : "primary"
-            } col-3 my-2`}
+      <Container className="col-8 flex-wrap mt-2 mb-5">
+        <Form
+          onSubmit={addPost}
+          className={`d-flex flex-column ${
+            isDark ? "bg-dark text-light" : "bg-light text-dark"
+          }`}
+        >
+          <InputGroup
+            className={`bg-${isDark ? "dark text-light" : "light text-dark"}`}
           >
-            Choose File
-          </label>
-          <input
-            type="file"
-            id="file"
-            className={`d-none`}
-            onChange={(e) => setPhoto(e.target.files[0])}
-          />
-          <button
-            className={`btn btn-outline-${isDark ? "light" : "primary"} col-3 `}
-          >
+            <FormControl
+              as="textarea"
+              className={`bg-${isDark ? "dark text-light" : "light text-dark"}`}
+              placeholder="What's on your mind?"
+              onChange={(e) => setText(e.target.value)}
+              rows={3}
+            />
+          </InputGroup>
+          <InputGroup className="d-flex flex-column my-2">
+            <Button variant={`outline-${isDark ? "light" : "primary"} col-3`}>
+              Choose File
+            </Button>
+            <FormControl
+              type="file"
+              onChange={(e) => setPhoto(e.target.files[0])}
+              className="d-none"
+            />
+          </InputGroup>
+          <Button variant={`outline-${isDark ? "light" : "primary"} col-3`}>
             Post
-          </button>
-        </div>
-      </form>
+          </Button>
+        </Form>
+      </Container>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { AiOutlineSend, AiOutlineDislike } from "react-icons/ai";
+import { AiOutlineSend } from "react-icons/ai";
 import { MdOutlineComment } from "react-icons/md";
 import { Modal } from "react-bootstrap";
 import SelectAction from "./SelectAction";
@@ -100,7 +100,7 @@ const Posts = (props) => {
                   isDark ? "outline-light" : "outline-primary"
                 } border-${isDark ? "light" : "dark"}`}
                 onClick={() => addComent(post.id)}
-                disabled={activeUser === null}
+                disabled={!activeUser}
               >
                 <AiOutlineSend />
               </button>
@@ -109,7 +109,7 @@ const Posts = (props) => {
         </div>
 
         <button
-          className={`btn btn-outline-${isDark ? "light" : "primary"} w-75`}
+          className="btn btn-link"
           onClick={() => handleShowModal(post.id)}
           disabled={!activeUser}
         >
@@ -121,7 +121,16 @@ const Posts = (props) => {
         <Modal
           show={showModal}
           onHide={handleCloseModal}
-          style={{ maxWidth: "100vw" }}
+          style={{
+            maxWidth: "100vw",
+            position: "fixed",
+            top: "50%",
+            left: "0",
+            right: "0",
+            bottom: "0",
+            margin: "auto",
+            transform: "translateY(-50%,-50%)",
+          }}
         >
           <Modal.Header
             closeButton
@@ -138,18 +147,20 @@ const Posts = (props) => {
               color: isDark ? "#f8f9fa" : "#343a40",
             }}
           >
-            {post.comments
-              ? comments?.map((comment, i) => (
-                  <div key={i}>
-                    <p>
-                      <span className="mx-2 text-muted">
-                        {comment.user === "" ? "Anonymous" : comment.user}
-                      </span>
-                      : {comment.text}
-                    </p>
-                  </div>
-                ))
-              : null}
+            {post.comments?.length > 0 ? (
+              comments?.map((comment, i) => (
+                <div key={i}>
+                  <p>
+                    <span className="mx-2 text-muted">
+                      {comment.user === "" ? "Anonymous" : comment.user}
+                    </span>
+                    : {comment.text}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <h2>No comments to show</h2>
+            )}
           </Modal.Body>
         </Modal>
       </div>

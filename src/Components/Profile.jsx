@@ -33,7 +33,7 @@ const Profile = ({ isDark }) => {
         />
 
         <div>
-          <h1 className="mb-0">
+          <h1 className="mb-0 mx-3">
             {userProfile?.firstName} {userProfile?.lastName}
           </h1>
         </div>

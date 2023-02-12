@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Button } from "react-bootstrap";
 import { db } from "../config/firebase";
 const LikeButton = ({ isDark, post, activeUser }) => {
   const [buttonText, setButtonText] = useState("Like");
@@ -31,16 +32,16 @@ const LikeButton = ({ isDark, post, activeUser }) => {
     }
   };
   return (
-    <button
-      className={`btn btn-${
-        isDark ? "outline-light" : " none"
-      } d-flex border-0 ${buttonText === "Like" ? "" : "text-primary"}`}
+    <Button
+      variant={`${isDark ? "outline-light" : " none"} d-flex border-0 ${
+        buttonText === "Like" ? "" : "text-primary"
+      }`}
       onClick={(e) => addLike(post.id)}
       disabled={!activeUser}
     >
       <AiOutlineLike className="mx-1" />
       {buttonText}
-    </button>
+    </Button>
   );
 };
 
