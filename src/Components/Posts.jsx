@@ -53,15 +53,15 @@ const Posts = (props) => {
     <div
       key={i}
       className={`${
-        fullWidth ? "col-12 " : "col-10 col-sm-6 "
-      } p-4 shadow-lg my-4 mx-auto`}
+        fullWidth ? "col-12" : "col-12 col-sm-8 "
+      } p-4 shadow-lg my-4 mx-5 justify-content-center`}
     >
       {post.user ? <span>{post.user}</span> : null}
       <br />
       <span className="text-muted">
         {post.postedTime?.toDate().toLocaleString()}
       </span>
-      <h2>{post?.title}</h2>
+      <h2 className="text-muted">{post?.title}</h2>
       <div className="post_img col-4 col-sm-5 col-md-6 col-lg-7">
         {post.image ? (
           <img src={post.image} className="img-fluid mx-auto" />

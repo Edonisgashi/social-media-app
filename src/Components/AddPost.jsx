@@ -65,7 +65,9 @@ const AddPost = ({ isDark }) => {
             />
           </InputGroup>
           <InputGroup className="d-flex flex-column my-2">
-            <Button variant={`outline-${isDark ? "light" : "primary"} col-3`}>
+            <Button
+              variant={`outline-${isDark ? "light" : "primary"} col-8 col-md-3`}
+            >
               Choose File
             </Button>
             <FormControl
@@ -74,7 +76,10 @@ const AddPost = ({ isDark }) => {
               className="d-none"
             />
           </InputGroup>
-          <Button variant={`outline-${isDark ? "light" : "primary"} col-3`}>
+          <Button
+            variant={`outline-${isDark ? "light" : "primary"} col-8 col-md-3`}
+            type="submit"
+          >
             Post
           </Button>
         </Form>

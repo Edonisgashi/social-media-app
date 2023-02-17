@@ -6,7 +6,7 @@ import { appContext } from "../Context/AppContext";
 const Sidebar = (props) => {
   const [showMenu, setShowMenu] = useState(false);
   const { activeUser } = useContext(appContext);
-  const { handleTheme } = props;
+  const { handleTheme, isDark } = props;
 
   const handleMenu = () => {
     setShowMenu(true);
@@ -16,13 +16,8 @@ const Sidebar = (props) => {
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 120,
-      }}
-    >
-      <div className="d-flex align-items-start d-lg-none justify-content-center">
+    <div>
+      <div className="d-flex align-items-start justify-content-center">
         <button
           className={`btn btn-outline-${
             props.isDark ? "light" : "primary"
@@ -40,6 +35,7 @@ const Sidebar = (props) => {
           props.isDark ? "dark text-light" : "light text-dark"
         }`}
         style={{ maxWidth: "fitContent" }}
+        placement="end"
       >
         <Offcanvas.Header
           className={`text-${
@@ -51,12 +47,13 @@ const Sidebar = (props) => {
           </h2>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Menu activeUser={activeUser} handleTheme={handleTheme} />
+          <Menu
+            activeUser={activeUser}
+            handleTheme={handleTheme}
+            isDark={isDark}
+          />
         </Offcanvas.Body>
       </Offcanvas>
-      <div className="d-none d-lg-block">
-        <Menu activeUser={activeUser} handleTheme={handleTheme} />
-      </div>
     </div>
   );
 };

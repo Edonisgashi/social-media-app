@@ -32,9 +32,10 @@ const Notifications = () => {
   }, [activeUser]);
 
   return (
-    <>
+    <div>
+      <h2 className="text-center text-muted mb-5 pt-3">Notifications</h2>
       <span
-        className="btn btn-info"
+        className="btn btn-info mx-3"
         onClick={() => readNotifications(activeUser?.id)}
       >
         {" "}
@@ -43,7 +44,7 @@ const Notifications = () => {
       {notifications?.map((notification, i) => {
         return <h1 key={i}>{notification.notification}</h1>;
       })}
-    </>
+    </div>
   );
 };
 

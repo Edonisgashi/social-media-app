@@ -3,16 +3,22 @@ import { Link } from "react-router-dom";
 import {
   MdOutlineLogin,
   MdOutlineNotificationsNone,
-  MdPersonSearch,
+  MdOutlineSearch,
+  MdOutlineHome,
 } from "react-icons/md";
 import { RiRegisteredLine } from "react-icons/ri";
-
+import Search from "./Search";
 import { appContext } from "../Context/AppContext";
+import Sidebar from "./Sidebar";
 
-const Navbar = ({ isDark }) => {
+const Navbar = ({ isDark, handleTheme }) => {
   const { activeUser } = useContext(appContext);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(false);
+
+  const scrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +36,7 @@ const Navbar = ({ isDark }) => {
 
   return (
     <nav
-      className={`header d-flex align-items-center justify-content-around mb-5 w-100 py-4 shadow-lg  ${
+      className={`header d-flex align-items-center justify-content-around  w-100 py-4 shadow-lg  ${
         visible ? "header--visible" : "header--hidden"
       }
       ${!isDark ? "bg-primary " : "bg-dark bg-opacity-75"}`}
@@ -40,12 +46,17 @@ const Navbar = ({ isDark }) => {
         },
       }}
     >
-      <Link to="/" className="text-decoration-none text-light">
+      <Link
+        to="/"
+        className="text-decoration-none text-light"
+        onClick={scrollTop}
+      >
         <h3 className="d-flex align-items-center">
-          <span class="material-icons">diversity_3</span>
+          <MdOutlineHome />
+          <span className="d-none d-lg-flex mx-1">Timeline</span>
         </h3>
       </Link>
-      <br />
+
       {!activeUser ? (
         <>
           <Link to="/login" className="text-decoration-none text-light">
@@ -73,18 +84,25 @@ const Navbar = ({ isDark }) => {
               <span className="d-none d-lg-flex mx-1">Notifications</span>
             </h3>
           </Link>
-          <Link className="text-decoration-none text-light">
-            <h3 className="d-flex align-items-center ">
-              <MdPersonSearch />
-              <span className="d-none d-lg-flex mx-1">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="bg-transparent"
-                />
-              </span>
-            </h3>
-          </Link>
+
+          <div className="d-none d-md-block">
+            <Search isDark={isDark} />
+          </div>
+          <div className="d-block d-md-none">
+            <Link className="text-decoration-none text-light" to="/search">
+              <h3 className="d-flex align-items-center ">
+                <MdOutlineSearch />
+                <span className="d-none d-lg-flex mx-1">Search</span>
+              </h3>
+            </Link>
+          </div>
+          <div>
+            <Link className="text-decoration-none text-light">
+              <h3 className="d-flex align-items-center ">
+                <Sidebar isDark={isDark} handleTheme={handleTheme} />
+              </h3>
+            </Link>
+          </div>
         </>
       )}
     </nav>

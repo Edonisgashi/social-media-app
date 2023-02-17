@@ -25,8 +25,8 @@ const Profile = ({ isDark }) => {
   }, []);
 
   return (
-    <div className="container profile-page">
-      <div className="header d-flex align-items-center my-5">
+    <div className="container profile-page py-5">
+      <div className=" d-flex align-items-center my-5">
         <UserAvatar
           firstName={userProfile?.firstName}
           lastName={userProfile?.lastName}

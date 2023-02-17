@@ -13,6 +13,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AddPost from "./Components/AddPost";
 import Notifications from "./Components/Notifications";
+import Search from "./Components/Search";
 
 const App = () => {
   const [isDark, setIsDark] = useState(false);
@@ -27,7 +28,7 @@ const App = () => {
     >
       <AppContext>
         <Router>
-          <Navbar isDark={isDark} />
+          <Navbar isDark={isDark} handleTheme={handleTheme} />
 
           <Routes>
             <Route
@@ -53,6 +54,7 @@ const App = () => {
               path="/:user/notifications"
               element={<ProtectedRoute component={Notifications} />}
             />
+            <Route path="/search" element={<Search isDark={isDark} />} />
           </Routes>
         </Router>
       </AppContext>
