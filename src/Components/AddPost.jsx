@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
-import { postsRef, db } from "../config/firebase";
+import { postsRef, db, storage } from "../config/firebase";
 import { appContext } from "../Context/AppContext";
 import {
   Form,
@@ -8,9 +8,16 @@ import {
   InputGroup,
   FormControl,
   Container,
+  Alert,
+  Toast,
 } from "react-bootstrap";
-const AddPost = ({ isDark }) => {
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+const AddPost = ({ isDark, textProp }) => {
+  const [errorMsg, seterrorMsg] = useState("");
   const [text, setText] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [postImage, setPostImage] = useState("");
   const [photo, setPhoto] = useState();
   const { activeUser } = useContext(appContext);
 
@@ -29,8 +36,9 @@ const AddPost = ({ isDark }) => {
       user: activeUser.username,
       comments: [],
       postedTime: currentDate,
+      image: postImage,
     };
-    if (text !== "") {
+    if (text !== "" || postImage !== "") {
       addDoc(postsRef, post).then((response) => {
         e.target.reset();
       });
@@ -41,11 +49,45 @@ const AddPost = ({ isDark }) => {
       updateDoc(userPost, updatedUser)
         .then((response) => console.log(response))
         .catch((error) => console.log(error));
+    } else {
+      seterrorMsg(
+        "Sorry , your post must include either a description or an image link or both of them !"
+      );
     }
   };
 
   return (
     <>
+      {showAlert && (
+        <Alert
+          variant="danger"
+          onClose={() => setShowAlert(false)}
+          dismissible
+          className="mx-auto"
+        >
+          <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+          <p>{errorMsg}</p>
+        </Alert>
+      )}
+      {showToast && (
+        <Toast
+          bg="success"
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          delay={3000}
+          autohide
+          className="mx-auto"
+        >
+          <Toast.Header bg="success">Success Message</Toast.Header>
+          <Toast.Body>Posted successfully</Toast.Body>
+        </Toast>
+      )}
+      {textProp && (
+        <h2 className="text-muted text-center mb-5 pt-5 pt-md-0">
+          What's on your mind ?
+        </h2>
+      )}
+
       <Container className="col-8 flex-wrap mt-2 mb-5">
         <Form
           onSubmit={addPost}
@@ -64,21 +106,41 @@ const AddPost = ({ isDark }) => {
               rows={3}
             />
           </InputGroup>
-          <InputGroup className="d-flex flex-column my-2">
-            <Button
-              variant={`outline-${isDark ? "light" : "primary"} col-8 col-md-3`}
+          <InputGroup
+            className={`bg-${
+              isDark ? "dark text-light" : "light text-dark"
+            } my-2`}
+          >
+            <FormControl
+              type="text"
+              as="textarea"
+              className={`bg-${isDark ? "dark text-light" : "light text-dark"}`}
+              placeholder="Post's image"
+              onChange={(e) => setPostImage(e.target.value)}
+            />
+          </InputGroup>
+          {/* <InputGroup className="d-flex flex-column my-2">
+            <Form.Label
+              htmlFor="file"
+              className={`btn btn-${
+                isDark ? "dark" : "primary"
+              } col-8 col-md-3 border`}
             >
               Choose File
-            </Button>
+            </Form.Label>
             <FormControl
               type="file"
               onChange={(e) => setPhoto(e.target.files[0])}
               className="d-none"
+              id="file"
             />
-          </InputGroup>
+          </InputGroup> */}
           <Button
-            variant={`outline-${isDark ? "light" : "primary"} col-8 col-md-3`}
+            variant={`${isDark ? "dark" : "primary"} col-8 col-md-3 border`}
             type="submit"
+            onClick={() =>
+              errorMsg.length > 0 ? setShowAlert(true) : setShowToast(true)
+            }
           >
             Post
           </Button>

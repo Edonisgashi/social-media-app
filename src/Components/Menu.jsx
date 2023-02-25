@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BsBookmark } from "react-icons/bs";
 import { ImProfile } from "react-icons/im";
 import { FaUserFriends } from "react-icons/fa";
@@ -15,36 +15,45 @@ import { auth } from "../config/firebase";
 import { CiDark } from "react-icons/ci";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { appContext } from "../Context/AppContext";
 
-const Menu = ({ activeUser, handleTheme, isDark }) => {
+const Menu = ({ activeUser, handleTheme, isDark, handleClose }) => {
+  const { setActiveUser } = useContext(appContext);
   const navigate = useNavigate();
   const signOutUser = () => {
     signOut(auth)
-      .then((response) => navigate("/login"))
+      .then((response) => {
+        setActiveUser(null);
+        navigate("/login");
+      })
       .catch((error) => console.log(error));
   };
   return (
     <div className="footer__container">
       <ul className="flex-column align-items-start">
         <MenuItem
+          handleClose={handleClose}
           to={`profile/${activeUser?.userID}`}
           Icon={ImProfile}
           text={`${activeUser ? activeUser?.username : "Profile"}`}
           activeUser={activeUser}
         />
         <MenuItem
+          handleClose={handleClose}
           to={`/${activeUser?.username}/friends`}
           Icon={FaUserFriends}
           activeUser={activeUser}
           text="Friends"
         />
         <MenuItem
+          handleClose={handleClose}
           to={`/${activeUser?.username}/newpost`}
           Icon={MdAdd}
           activeUser={activeUser}
           text="New Post"
         />
         <MenuItem
+          handleClose={handleClose}
           to={`/${activeUser?.username}/saved`}
           Icon={BsBookmark}
           activeUser={activeUser}
@@ -66,6 +75,7 @@ const Menu = ({ activeUser, handleTheme, isDark }) => {
             <Dropdown.Item>
               {" "}
               <MenuItem
+                handleClose={handleClose}
                 to="/editProfile"
                 Icon={MdOutlineModeEdit}
                 activeUser={activeUser}
@@ -82,7 +92,10 @@ const Menu = ({ activeUser, handleTheme, isDark }) => {
               />
             </Dropdown.Item>
             <Dropdown.Item>
-              <li className="nav-item mb-4 d-flex align-items-center">
+              <li
+                className="nav-item mb-4 d-flex align-items-center"
+                onClick={handleClose}
+              >
                 <h5
                   className="mx-auto"
                   style={{

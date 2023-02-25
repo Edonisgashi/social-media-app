@@ -33,14 +33,23 @@ const LikeButton = ({ isDark, post, activeUser }) => {
   };
   return (
     <Button
-      variant={`${isDark ? "outline-light" : " none"} d-flex border-0 ${
-        buttonText === "Like" ? "" : "text-primary"
-      }`}
+      style={{ backgroundColor: "transparent" }}
+      className={` d-flex border-0 align-items-center text-${
+        isDark ? "light" : "dark"
+      } `}
       onClick={(e) => addLike(post.id)}
       disabled={!activeUser}
     >
-      <AiOutlineLike className="mx-1" />
-      {buttonText}
+      <h5 className={`mx-1 ${buttonText === "Like" ? "" : "text-primary"}`}>
+        <AiOutlineLike />
+      </h5>
+      <h5
+        className={`d-none d-sm-block ${
+          buttonText === "Like" ? "" : "text-primary"
+        }`}
+      >
+        {buttonText}
+      </h5>
     </Button>
   );
 };

@@ -19,9 +19,9 @@ const Sidebar = (props) => {
     <div>
       <div className="d-flex align-items-start justify-content-center">
         <button
-          className={`btn btn-outline-${
-            props.isDark ? "light" : "primary"
-          } btn-lg border-0 `}
+          className={`btn btn-${
+            isDark ? "dark" : "none"
+          } border btn-lg border-0 text-light`}
           onClick={handleMenu}
         >
           <MdMenu />
@@ -51,6 +51,7 @@ const Sidebar = (props) => {
             activeUser={activeUser}
             handleTheme={handleTheme}
             isDark={isDark}
+            handleClose={handleClose}
           />
         </Offcanvas.Body>
       </Offcanvas>

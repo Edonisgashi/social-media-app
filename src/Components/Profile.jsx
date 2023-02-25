@@ -22,18 +22,30 @@ const Profile = ({ isDark }) => {
     if (currentUser) {
       setUserProfile(users.find((user) => user.userID === id));
     }
-  }, []);
+  }, [activeUser]);
 
   return (
-    <div className="container profile-page py-5">
+    <div className="container profile-page py-5 ">
+      <img
+        src="https://images.unsplash.com/photo-1457305237443-44c3d5a30b89?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80"
+        alt=""
+        className="img img-fluid shadow-lg"
+        style={{
+          height: "400px",
+          objectFit: "cover",
+          width: "100%",
+        }}
+      />
       <div className=" d-flex align-items-center my-5">
-        <UserAvatar
-          firstName={userProfile?.firstName}
-          lastName={userProfile?.lastName}
+        <img
+          src="https://images.unsplash.com/photo-1634926878768-2a5b3c42f139?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=456&q=80"
+          alt=""
+          style={{ width: "170px", height: "170px", borderRadius: "50%" }}
+          className="img-fluid mx-5"
         />
 
         <div>
-          <h1 className="mb-0 mx-3">
+          <h1 className="mb-0">
             {userProfile?.firstName} {userProfile?.lastName}
           </h1>
         </div>
@@ -45,7 +57,8 @@ const Profile = ({ isDark }) => {
           <p>{userProfile?.friends?.length}</p>
           <>
             <Button
-              variant={`outline-${isDark ? "light" : "primary"}`}
+              variant={`${isDark ? "dark" : "primary"}`}
+              className="border"
               onClick={handleShow}
             >
               See all Friends
@@ -90,12 +103,13 @@ const Profile = ({ isDark }) => {
             </Modal>
           </>
         </div>
-        <div className="stat text-center">
+        <div className="stat text-center mb-5 mb-md-0 pb-5">
           <p className="text-muted mb-1">Posts</p>
           <p>{userProfile?.posts?.length}</p>
           <>
             <Button
-              variant={`outline-${isDark ? "light" : "primary"}`}
+              variant={`${isDark ? "dark" : "primary"}`}
+              className="border"
               onClick={handleShowPosts}
             >
               See all posts

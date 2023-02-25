@@ -44,8 +44,8 @@ const UsersList = ({ isDark }) => {
     if (activeUser !== null) {
       return users.filter(
         (user) =>
-          user.userID !== activeUser?.userID &&
-          activeUser?.friends?.includes(user)
+          !activeUser?.friends?.includes(user) &&
+          user.userID !== activeUser?.userID
       );
     }
     return [];
@@ -73,8 +73,16 @@ const UsersList = ({ isDark }) => {
               className={`btn btn-outline-${
                 isDark ? "light" : "primary"
               } border-0 mx-5 my-1`}
-              onClick={() => addFriend(user)}
-              disabled={activeUser?.friends?.includes(user)}
+              onClick={() => {
+                addFriend(user);
+              }}
+              disabled={
+                activeUser &&
+                activeUser.friends &&
+                activeUser.friends.some(
+                  (friend) => friend.userID === user.userID
+                )
+              }
             >
               {user.username}{" "}
               {activeUser?.friends?.includes(user) ? (

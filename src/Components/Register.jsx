@@ -12,13 +12,31 @@ const Register = ({ isDark }) => {
   const [password, setPassword] = useState();
   const [username, setUserame] = useState();
   const [isRegistered, setIsRegistered] = useState(false);
-  const [error, setError] = useState();
+  const [errorUsername, setErrorUsername] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
 
   const { activeUser, users, currentUser, setActiveUser } =
     useContext(appContext);
 
+  const checkUsername = (username) => {
+    users.forEach((user) => {
+      if (user.username === username) {
+        setErrorUsername("Username already exists");
+      }
+    });
+  };
+  const checkEmail = (email) => {
+    users.forEach((user) => {
+      if (user.email === email) {
+        setErrorEmail("Email already exists");
+      }
+    });
+  };
+
   const registerUserForm = async (e) => {
     e.preventDefault();
+
+    if (errorEmail || errorUsername) return;
 
     await createUserWithEmailAndPassword(auth, email, password)
       .then((cred) => {
@@ -50,7 +68,7 @@ const Register = ({ isDark }) => {
   return (
     <form
       onSubmit={registerUserForm}
-      className={`d-flex flex-column justify-content-around  my-5 mx-auto shadow-lg p-5  col-8 col-sm-6 col-md-4 col-lg-4 bg-${
+      className={`d-flex flex-column justify-content-around  my-5 mx-auto shadow-lg p-5  col-8 col-sm-6  bg-${
         isDark ? "dark" : "light"
       }`}
     >
@@ -93,9 +111,12 @@ const Register = ({ isDark }) => {
           isDark ? "bg-dark text-white" : "bg-light text-dark"
         }`}
         placeholder="Enter your Username"
-        onChange={(e) => setUserame(e.target.value)}
+        onChange={(e) => {
+          setUserame(e.target.value);
+          checkUsername(e.target.value);
+        }}
       />
-
+      {errorUsername && <p className="text-danger">{errorUsername}</p>}
       <label htmlFor="email" className="my-1">
         Email:
       </label>
@@ -107,9 +128,12 @@ const Register = ({ isDark }) => {
           isDark ? "bg-dark text-white" : "bg-light text-dark"
         }`}
         placeholder="Enter your email"
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          checkEmail(e.target.value);
+        }}
       />
-
+      {errorEmail && <p className="text-danger">{errorEmail}</p>}
       <label htmlFor="password" className="my-1">
         Password
       </label>

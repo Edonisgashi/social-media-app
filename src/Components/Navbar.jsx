@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   MdOutlineLogin,
   MdOutlineNotificationsNone,
@@ -36,75 +36,96 @@ const Navbar = ({ isDark, handleTheme }) => {
 
   return (
     <nav
-      className={`header d-flex align-items-center justify-content-around  w-100 py-4 shadow-lg  ${
+      className={`header d-flex align-items-center justify-content-around   py-4 shadow-lg  ${
         visible ? "header--visible" : "header--hidden"
       }
       ${!isDark ? "bg-primary " : "bg-dark bg-opacity-75"}`}
-      style={{
-        "@media (minWidth: 576px)": {
-          maxWidth: "50%",
-        },
-      }}
     >
-      <Link
+      <NavLink
         to="/"
-        className="text-decoration-none text-light"
+        className={({ isActive }) =>
+          isActive ? "text-light nav-link" : "text-decoration-none text-light"
+        }
         onClick={scrollTop}
       >
         <h3 className="d-flex align-items-center">
           <MdOutlineHome />
           <span className="d-none d-lg-flex mx-1">Timeline</span>
         </h3>
-      </Link>
+      </NavLink>
 
       {!activeUser ? (
         <>
-          <Link to="/login" className="text-decoration-none text-light">
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              isActive
+                ? "text-light nav-link"
+                : "text-decoration-none text-light"
+            }
+          >
             <h3 className="d-flex align-items-center">
               <MdOutlineLogin />{" "}
               <span className="d-none d-lg-flex mx-1">Login</span>
             </h3>
-          </Link>
-          <br />
-          <Link to="/register" className="text-decoration-none text-light">
+          </NavLink>
+
+          <NavLink
+            to="/register"
+            className={({ isActive }) =>
+              isActive
+                ? "text-light nav-link"
+                : "text-decoration-none text-light"
+            }
+          >
             <h3 className="d-flex align-items-center">
               <RiRegisteredLine />{" "}
               <span className="d-none d-lg-flex mx-1">Register</span>
             </h3>
-          </Link>
+          </NavLink>
         </>
       ) : (
         <>
-          <Link
-            className="text-decoration-none text-light"
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "text-light nav-link"
+                : "text-decoration-none text-light"
+            }
             to="/user/notifications"
           >
             <h3 className="d-flex align-items-center ">
               <MdOutlineNotificationsNone />
               <span className="d-none d-lg-flex mx-1">Notifications</span>
             </h3>
-          </Link>
+          </NavLink>
 
           <div className="d-none d-md-block">
             <Search isDark={isDark} />
           </div>
           <div className="d-block d-md-none">
-            <Link className="text-decoration-none text-light" to="/search">
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "text-light nav-link"
+                  : "text-decoration-none text-light"
+              }
+              to="/search"
+            >
               <h3 className="d-flex align-items-center ">
                 <MdOutlineSearch />
                 <span className="d-none d-lg-flex mx-1">Search</span>
               </h3>
-            </Link>
+            </NavLink>
           </div>
-          <div>
-            <Link className="text-decoration-none text-light">
-              <h3 className="d-flex align-items-center ">
-                <Sidebar isDark={isDark} handleTheme={handleTheme} />
-              </h3>
-            </Link>
-          </div>
+          <div></div>
         </>
       )}
+      <NavLink className="text-decoration-none text-light">
+        <h3 className="d-flex align-items-center ">
+          <Sidebar isDark={isDark} handleTheme={handleTheme} />
+        </h3>
+      </NavLink>
     </nav>
   );
 };

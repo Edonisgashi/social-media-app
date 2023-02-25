@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const MenuItem = ({ to, Icon, activeUser, text, signOutUser }) => {
+const MenuItem = ({ to, Icon, activeUser, text, signOutUser, handleClose }) => {
   return (
-    <li className="nav-item mb-4">
+    <li className="nav-item mb-4" onClick={handleClose}>
       <Link
         to={to}
         style={{

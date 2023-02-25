@@ -36,32 +36,31 @@ const SelectAction = ({ isDark, post }) => {
   return (
     <Dropdown>
       <Dropdown.Toggle
-        variant={`outline-${isDark ? "light" : "none"}`}
+        variant={`${isDark ? "dark" : "none"}`}
         id="dropdown-basic"
       >
         <TbDots />
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
+      <Dropdown.Menu variant={`${isDark ? "dark " : "light"}`}>
         <Dropdown.Item
           onClick={() => addBookmark(post)}
           className="d-flex align-items-center"
         >
           <MdOutlineBookmarkBorder />
 
-          <span className="mx-2 d-none d-sm-flex">{saveBtnText}</span>
+          <span className="mx-2 ">{saveBtnText}</span>
         </Dropdown.Item>
         <Dropdown.Item className="d-flex align-items-center">
           <MdOutlineContentCopy />
-          <span className="mx-2 d-none d-sm-flex">Copy link</span>
+          <span className="mx-2 ">Copy link</span>
         </Dropdown.Item>
         {activeUser?.userID === post?.postID ? (
           <Dropdown.Item
             onClick={() => deletePost(post.id)}
             className="d-flex align-items-center"
           >
-            <MdDeleteOutline />{" "}
-            <span className="mx-2 d-none d-sm-flex">Delete Post</span>
+            <MdDeleteOutline /> <span className="mx-2 ">Delete Post</span>
           </Dropdown.Item>
         ) : null}
       </Dropdown.Menu>

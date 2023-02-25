@@ -6,6 +6,8 @@ import SelectAction from "./SelectAction";
 import { db } from "../config/firebase";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import LikeButton from "./LikeButton";
+import { Link } from "react-router-dom";
+import TruncateText from "./TruncateText";
 const Posts = (props) => {
   const [commentText, setCommentText] = useState("");
   const [showCommentInput, setShowCommentInput] = useState(false);
@@ -15,6 +17,16 @@ const Posts = (props) => {
   const [comments, setComments] = useState([]);
 
   const inputRef = useRef(null);
+
+  const convertNum = (num) => {
+    if (num >= 1000 && num < 1000000) {
+      return (num / 1000).toFixed(1) + "K";
+    } else if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + "M";
+    } else if (num < 1000) {
+      return num;
+    }
+  };
 
   const handleShowModal = (id) => {
     setShowModal(true);
@@ -52,70 +64,98 @@ const Posts = (props) => {
   return (
     <div
       key={i}
-      className={`${
-        fullWidth ? "col-12" : "col-12 col-sm-8 "
-      } p-4 shadow-lg my-4 mx-5 justify-content-center`}
+      className={`mx-5 mx-md-auto ${fullWidth ? "col-12" : "col-12 col-md-8"} ${
+        isDark ? "border__dark" : ""
+      } p-4 my-4 shadow `}
+      style={{ maxWidth: "80%" }}
     >
-      {post.user ? <span>{post.user}</span> : null}
-      <br />
+      {post.user ? (
+        <Link className="user-link" to={`/profile/${post.postID}`}>
+          <p className="text-muted">{post.user}</p>
+        </Link>
+      ) : null}
+
       <span className="text-muted">
         {post.postedTime?.toDate().toLocaleString()}
       </span>
-      <h2 className="text-muted">{post?.title}</h2>
-      <div className="post_img col-4 col-sm-5 col-md-6 col-lg-7">
+      <TruncateText text={post?.title} isDark={isDark} />
+      <div className="post_img col-12">
         {post.image ? (
-          <img src={post.image} className="img-fluid mx-auto" />
+          <img
+            src={post.image}
+            className="img-fluid w-100"
+            style={{ maxHeight: "450px", objectFit: "cover" }}
+          />
         ) : null}
       </div>
       <div className="actions d-flex flex-column justify-content-start my-3 align-items-start">
-        <p className="text-muted">{post?.likes}</p>
-        <div className="d-flex flex-wrap col-6 justify-content-start ">
+        <div className="d-flex col-12 justify-content-around align-items-center">
+          <p>
+            {convertNum(post.likes)}
+            <span className="mx-1">
+              {post?.likes > 1 || post?.likes === 0 ? "Likes" : "Like"}
+            </span>
+          </p>
+
+          <p
+            className="mx-1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleShowModal(post.id)}
+          >
+            {post.comments.length} Comments
+          </p>
+        </div>
+        <div
+          className={`${
+            isDark ? "border_dark" : "border_light"
+          } d-flex flex-wrap col-12 py-3  justify-content-around`}
+        >
           <LikeButton post={post} isDark={isDark} activeUser={activeUser} />
           <button
-            className={`btn btn-${
-              isDark ? "outline-light" : " none"
-            } d-flex border-0`}
-            onClick={() => setShowCommentInput(true)}
+            style={{ backgroundColor: "transparent" }}
+            className={` d-flex border-0 align-items-center text-${
+              isDark ? "light" : "dark"
+            }`}
+            onClick={() => setShowCommentInput(!showCommentInput)}
             disabled={!activeUser}
           >
-            <MdOutlineComment className="mx-1" />
-            Comment
+            <h5 className="mx-1">
+              <MdOutlineComment />
+            </h5>
+            <h5 className="d-none d-sm-block"> Comment</h5>
           </button>
           <SelectAction isDark={isDark} post={post} />
-
-          {showCommentInput ? (
-            <div className="d-flex ">
+        </div>
+        {showCommentInput ? (
+          <div className="d-flex mx-auto align-items-center">
+            <div style={{ position: "relative" }} className="w-100 my-2">
               <input
                 ref={inputRef}
                 type="textarea"
                 className={`${
                   isDark ? "bg-dark text-light" : "bg-light text-dark"
-                } border-${isDark ? "light" : "dark"} my-1`}
+                } border-${isDark ? "light" : "dark"} `}
                 placeholder="Add a comment"
                 onChange={(e) => setCommentText(e.target.value)}
+                style={{ paddingRight: "40px" }}
               />
 
-              <button
-                className={`btn btn-${
-                  isDark ? "outline-light" : "outline-primary"
-                } border-${isDark ? "light" : "dark"}`}
-                onClick={() => addComent(post.id)}
-                disabled={!activeUser}
-              >
-                <AiOutlineSend />
-              </button>
+              {commentText?.length > 0 ? (
+                <button
+                  className={`btn btn-${
+                    isDark ? "outline-light " : "outline-primary"
+                  } border-${
+                    isDark ? "light" : "dark"
+                  } position-absolute end-0 top-50 translate-middle-y border-0`}
+                  onClick={() => addComent(post.id)}
+                  disabled={!activeUser}
+                >
+                  <AiOutlineSend />
+                </button>
+              ) : null}
             </div>
-          ) : null}
-        </div>
-
-        <button
-          className="btn btn-link"
-          onClick={() => handleShowModal(post.id)}
-          disabled={!activeUser}
-        >
-          Show Comments
-          <span className="mx-1">{post.comments.length}</span>
-        </button>
+          </div>
+        ) : null}
       </div>
       <div>
         <Modal

@@ -46,8 +46,8 @@ const Search = ({ isDark }) => {
   }, [searchValue]);
 
   return (
-    <div className="d-flex flex-column">
-      <h2 className="text-center text-muted">Search</h2>
+    <div className="d-flex flex-column pt-3">
+      <h2 className="text-center text-muted d-block d-md-none">Search</h2>
       <h2 className="mb-5 mx-2 d-block d-md-none">
         <Link to="/" className="text-muted">
           <MdOutlineArrowBackIos />

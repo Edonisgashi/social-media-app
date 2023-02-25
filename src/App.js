@@ -40,7 +40,7 @@ const App = () => {
             <Route path="/profile/:id" element={<Profile isDark={isDark} />} />
             <Route
               path="/:profile/newpost"
-              element={<ProtectedRoute component={AddPost} />}
+              element={<AddPost isDark={isDark} textProp />}
             />
             <Route
               path="/:profile/friends"
@@ -48,7 +48,7 @@ const App = () => {
             />
             <Route
               path="/:profile/saved"
-              element={<ProtectedRoute component={SavedPosts} />}
+              element={<SavedPosts isDark={isDark} />}
             />
             <Route
               path="/:user/notifications"

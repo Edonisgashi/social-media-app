@@ -6,11 +6,19 @@ const SavedPosts = ({ isDark }) => {
   const { activeUser } = useContext(appContext);
 
   return (
-    <>
-      {activeUser?.saved?.map((post) => {
-        return <Posts key={post.id} activeUser={activeUser} post={post} />;
+    <div className="vw-100">
+      {activeUser?.saved?.map((post, i) => {
+        return (
+          <Posts
+            key={post.id}
+            activeUser={activeUser}
+            i={i}
+            post={post}
+            isDark={isDark}
+          />
+        );
       })}
-    </>
+    </div>
   );
 };
 
