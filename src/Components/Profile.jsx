@@ -9,6 +9,7 @@ const Profile = ({ isDark }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [showFriends, setShowFriends] = useState(false);
   const [showPosts, setShowPosts] = useState(false);
+  const [userPosts, setUserPosts] = useState([]);
 
   const handleClosePosts = () => setShowPosts(false);
   const handleShowPosts = () => setShowPosts(true);
@@ -22,7 +23,11 @@ const Profile = ({ isDark }) => {
     if (currentUser) {
       setUserProfile(users.find((user) => user.userID === id));
     }
-  }, [activeUser]);
+    if (userProfile) {
+      setUserPosts(posts.filter((post) => post.postID === userProfile.userID));
+    }
+  }, [activeUser, userProfile]);
+  console.log(userPosts);
 
   return (
     <div className="container profile-page py-5 ">
@@ -105,7 +110,7 @@ const Profile = ({ isDark }) => {
         </div>
         <div className="stat text-center mb-5 mb-md-0 pb-5">
           <p className="text-muted mb-1">Posts</p>
-          <p>{userProfile?.posts?.length}</p>
+          <p>{userPosts?.length}</p>
           <>
             <Button
               variant={`${isDark ? "dark" : "primary"}`}
@@ -117,6 +122,7 @@ const Profile = ({ isDark }) => {
 
             <Modal
               show={showPosts}
+              fullscreen={true}
               onHide={handleClosePosts}
               style={{
                 backgroundColor: isDark ? "#343a40" : "#f8f9fa",
@@ -138,7 +144,7 @@ const Profile = ({ isDark }) => {
                   color: isDark ? "#f8f9fa" : "#343a40",
                 }}
               >
-                {userProfile?.posts?.length > 0 ? (
+                {userPosts?.length > 0 ? (
                   userProfile?.posts?.map((post, i) => {
                     return (
                       <Posts

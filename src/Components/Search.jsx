@@ -54,7 +54,7 @@ const Search = ({ isDark }) => {
         </Link>
       </h2>
       <InputGroup className="mb-3 w-100 w-md-25 position-relative d-flex ">
-        <h3 className="text-light">
+        <h3 className={`text-${isDark ? "dark" : "light"}`}>
           <MdOutlineSearch />
         </h3>
 
@@ -63,9 +63,7 @@ const Search = ({ isDark }) => {
             <FormControl
               type="search"
               placeholder="Search..."
-              className={`text-light shadow-lg ${
-                isDark ? "bg-dark" : "bg-primary"
-              }`}
+              className={`text-light  ${isDark ? "bg-dark" : "bg-primary"} `}
               value={searchValue}
               onChange={handleSearchChange}
               style={{

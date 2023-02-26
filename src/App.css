@@ -75,6 +75,9 @@ li {
 ::-webkit-scrollbar-thumb {
   background-color: #aaa;
 } */
+.loading {
+  background-color: rgb(66, 64, 64);
+}
 .see_less_btn:hover {
   cursor: pointer;
   text-decoration: underline;

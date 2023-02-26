@@ -32,7 +32,7 @@ const Sidebar = (props) => {
         onHide={handleClose}
         {...props}
         className={`my-auto  bg-${
-          props.isDark ? "dark text-light" : "light text-dark"
+          isDark ? "dark text-light" : "light text-dark"
         }`}
         style={{ maxWidth: "fitContent" }}
         placement="end"

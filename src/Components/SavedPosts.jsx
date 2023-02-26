@@ -6,7 +6,7 @@ const SavedPosts = ({ isDark }) => {
   const { activeUser } = useContext(appContext);
 
   return (
-    <div className="vw-100">
+    <div className="vw-100 pb-5">
       {activeUser?.saved?.map((post, i) => {
         return (
           <Posts

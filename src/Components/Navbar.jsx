@@ -10,6 +10,7 @@ import { RiRegisteredLine } from "react-icons/ri";
 import Search from "./Search";
 import { appContext } from "../Context/AppContext";
 import Sidebar from "./Sidebar";
+import NavItem from "./NavItem";
 
 const Navbar = ({ isDark, handleTheme }) => {
   const { activeUser } = useContext(appContext);
@@ -41,91 +42,42 @@ const Navbar = ({ isDark, handleTheme }) => {
       }
       ${!isDark ? "bg-primary " : "bg-dark bg-opacity-75"}`}
     >
-      <NavLink
+      <NavItem
         to="/"
-        className={({ isActive }) =>
-          isActive ? "text-light nav-link" : "text-decoration-none text-light"
-        }
-        onClick={scrollTop}
-      >
-        <h3 className="d-flex align-items-center">
-          <MdOutlineHome />
-          <span className="d-none d-lg-flex mx-1">Timeline</span>
-        </h3>
-      </NavLink>
+        scrollTop={scrollTop}
+        Icon={MdOutlineHome}
+        text="Timeline"
+      />
 
       {!activeUser ? (
         <>
-          <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              isActive
-                ? "text-light nav-link"
-                : "text-decoration-none text-light"
-            }
-          >
-            <h3 className="d-flex align-items-center">
-              <MdOutlineLogin />{" "}
-              <span className="d-none d-lg-flex mx-1">Login</span>
-            </h3>
-          </NavLink>
+          <NavItem to="/login" Icon={MdOutlineLogin} text="Login" />
 
-          <NavLink
-            to="/register"
-            className={({ isActive }) =>
-              isActive
-                ? "text-light nav-link"
-                : "text-decoration-none text-light"
-            }
-          >
-            <h3 className="d-flex align-items-center">
-              <RiRegisteredLine />{" "}
-              <span className="d-none d-lg-flex mx-1">Register</span>
-            </h3>
-          </NavLink>
+          <NavItem to="/register" Icon={RiRegisteredLine} text="Register" />
         </>
       ) : (
         <>
-          <NavLink
-            className={({ isActive }) =>
-              isActive
-                ? "text-light nav-link"
-                : "text-decoration-none text-light"
-            }
+          <NavItem
             to="/user/notifications"
-          >
-            <h3 className="d-flex align-items-center ">
-              <MdOutlineNotificationsNone />
-              <span className="d-none d-lg-flex mx-1">Notifications</span>
-            </h3>
-          </NavLink>
+            Icon={MdOutlineNotificationsNone}
+            text="Notifications"
+          />
 
           <div className="d-none d-md-block">
             <Search isDark={isDark} />
           </div>
           <div className="d-block d-md-none">
-            <NavLink
-              className={({ isActive }) =>
-                isActive
-                  ? "text-light nav-link"
-                  : "text-decoration-none text-light"
-              }
-              to="/search"
-            >
-              <h3 className="d-flex align-items-center ">
-                <MdOutlineSearch />
-                <span className="d-none d-lg-flex mx-1">Search</span>
-              </h3>
-            </NavLink>
+            <NavItem to="/search" Icon={MdOutlineSearch} text="Search" />
           </div>
-          <div></div>
         </>
       )}
-      <NavLink className="text-decoration-none text-light">
-        <h3 className="d-flex align-items-center ">
-          <Sidebar isDark={isDark} handleTheme={handleTheme} />
-        </h3>
-      </NavLink>
+      <div>
+        <NavLink className="text-decoration-none text-light">
+          <h3 className="d-flex align-items-center ">
+            <Sidebar isDark={isDark} handleTheme={handleTheme} />
+          </h3>
+        </NavLink>
+      </div>
     </nav>
   );
 };

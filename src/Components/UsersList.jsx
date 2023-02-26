@@ -57,7 +57,7 @@ const UsersList = ({ isDark }) => {
 
   return (
     <div
-      className="shadow-lg d-none d-lg-flex flex-column align-items-start col-md-2"
+      className="shadow-lg d-none d-lg-flex flex-column align-items-start col-md-2 mt-5"
       style={{
         position: "fixed",
         top: 120,

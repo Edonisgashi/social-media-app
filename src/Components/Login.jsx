@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { appContext } from "../Context/AppContext";
+import Inputs from "./Inputs";
 const Login = ({ isDark }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState("");
@@ -38,33 +39,23 @@ const Login = ({ isDark }) => {
           isDark ? "dark" : "light"
         }`}
       >
-        <div className="mb-3">
-          <label for="exampleInputEmail1" className="form-label">
-            Email address
-          </label>
-          <input
-            type="email"
-            className={`form-control ${
-              isDark ? "bg-dark text-white" : "bg-light text-dark"
-            }`}
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label for="exampleInputPassword1" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className={`form-control ${
-              isDark ? "bg-dark text-white" : "bg-light text-dark"
-            }`}
-            id="exampleInputPassword1"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        <Inputs
+          label="Email adress"
+          id="xampleInputEmail1"
+          type="email"
+          setValue={setEmail}
+          isDark={isDark}
+          ariaDescribely="emailHelp"
+        />
+        <Inputs
+          label="Password"
+          id="exampleInputPassword1"
+          type="password"
+          setValue={setPassword}
+          isDark={isDark}
+          ariaDescribely="passwordHelp"
+        />
+
         {error?.length > 0 && <p className="text-danger">{error}</p>}
         <button
           type="submit"
@@ -73,7 +64,12 @@ const Login = ({ isDark }) => {
           Login
         </button>
         <div className="my-3">
-          Don't have an account ? <Link to="/register">Register</Link>
+          <p>
+            Don't have an account ? <Link to="/register">Register</Link>
+          </p>
+          <p>
+            <Link to="/"> Continue as Guest</Link>
+          </p>
         </div>
       </form>
     </>

@@ -3,7 +3,7 @@ import { addDoc, serverTimestamp } from "firebase/firestore";
 import { usersRef, auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { appContext } from "../Context/AppContext";
-
+import Inputs from "./Inputs";
 const Register = ({ isDark }) => {
   const [birthDate, setBirthDate] = useState();
   const [firstName, setFirstName] = useState("");
@@ -19,18 +19,29 @@ const Register = ({ isDark }) => {
     useContext(appContext);
 
   const checkUsername = (username) => {
-    users.forEach((user) => {
-      if (user.username === username) {
-        setErrorUsername("Username already exists");
-      }
-    });
+    try {
+      users.forEach((user) => {
+        if (user.username === username) {
+          throw "Username already exists";
+        }
+      });
+      setErrorUsername("");
+    } catch (error) {
+      setErrorUsername(error);
+    }
   };
+
   const checkEmail = (email) => {
-    users.forEach((user) => {
-      if (user.email === email) {
-        setErrorEmail("Email already exists");
-      }
-    });
+    try {
+      users.forEach((user) => {
+        if (user.email === email) {
+          throw "Email already exists";
+        }
+      });
+      setErrorEmail("");
+    } catch (error) {
+      setErrorEmail(error);
+    }
   };
 
   const registerUserForm = async (e) => {
@@ -72,92 +83,63 @@ const Register = ({ isDark }) => {
         isDark ? "dark" : "light"
       }`}
     >
-      <label htmlFor="firstName" className="my-1">
-        First Name:
-        <input
-          type="text"
-          id="firstName"
-          name="firstName"
-          className={`form-control my-1 ${
-            isDark ? "bg-dark text-white" : "bg-light text-dark"
-          }`}
-          placeholder="Enter your First Name"
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-      </label>
-
-      <label htmlFor="lastName" className="my-1">
-        Last Name:
-        <input
-          type="text"
-          id="lastName"
-          className={`form-control my-1 ${
-            isDark ? "bg-dark text-white" : "bg-light text-dark"
-          }`}
-          name="lastName"
-          placeholder="Enter your Last Name"
-          onChange={(e) => setLastName(e.target.value)}
-        />
-      </label>
-
-      <label htmlFor="username" className="my-1">
-        Username:
-      </label>
-      <input
+      <Inputs
+        id="firstName"
+        label="First Name:"
         type="text"
-        id="username"
-        name="username"
-        className={`form-control my-1 ${
-          isDark ? "bg-dark text-white" : "bg-light text-dark"
-        }`}
-        placeholder="Enter your Username"
-        onChange={(e) => {
-          setUserame(e.target.value);
-          checkUsername(e.target.value);
-        }}
+        isDark={isDark}
+        placeholder="Enter your First Name"
+        setValue={setFirstName}
       />
+
+      <Inputs
+        id="lastName"
+        label="Last Name:"
+        type="text"
+        isDark={isDark}
+        placeholder="Enter your Last Name"
+        setValue={setLastName}
+      />
+
+      <Inputs
+        id="username"
+        label="Username:"
+        type="text"
+        isDark={isDark}
+        placeholder="Enter your Username"
+        setValue={setUserame}
+        checkValue={checkUsername}
+      />
+
       {errorUsername && <p className="text-danger">{errorUsername}</p>}
-      <label htmlFor="email" className="my-1">
-        Email:
-      </label>
-      <input
-        type="email"
+
+      <Inputs
         id="email"
-        name="email"
-        className={`form-control my-1 ${
-          isDark ? "bg-dark text-white" : "bg-light text-dark"
-        }`}
+        label="Email:"
+        type="email"
+        isDark={isDark}
         placeholder="Enter your email"
-        onChange={(e) => {
-          setEmail(e.target.value);
-          checkEmail(e.target.value);
-        }}
+        setValue={setEmail}
+        checkValue={checkEmail}
       />
       {errorEmail && <p className="text-danger">{errorEmail}</p>}
-      <label htmlFor="password" className="my-1">
-        Password
-      </label>
-      <input
-        type="password"
+
+      <Inputs
         id="password"
-        name="password"
-        className={`form-control my-1 ${
-          isDark ? "bg-dark text-white" : "bg-light text-dark"
-        }`}
-        onChange={(e) => setPassword(e.target.value)}
+        label="Password:"
+        type="password"
+        isDark={isDark}
+        placeholder="Enter your password"
+        setValue={setPassword}
       />
 
-      <label htmlFor="birthDate" className="my-1">
-        You birthdate
-      </label>
-      <input
-        type="date"
+      <Inputs
         id="birthDate"
-        name="birthDate"
-        className={`form-control my-1 ${
-          isDark ? "bg-dark text-white" : "bg-light text-dark"
-        }`}
-        onChange={(e) => setBirthDate(e.target.value)}
+        label="Your birthdate:"
+        type="date"
+        isDark={isDark}
+        placeholder="Enter your birthdate"
+        setValue={setBirthDate}
       />
 
       <button

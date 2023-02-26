@@ -64,9 +64,9 @@ const Posts = (props) => {
   return (
     <div
       key={i}
-      className={`mx-5 mx-md-auto ${fullWidth ? "col-12" : "col-12 col-md-8"} ${
-        isDark ? "border__dark" : ""
-      } p-4 my-4 shadow `}
+      className={`mx-5 pb-5 mx-md-auto ${
+        fullWidth ? "col-12" : "col-12 col-md-8"
+      } ${isDark ? "border__dark" : ""} p-4 my-4 shadow `}
       style={{ maxWidth: "80%" }}
     >
       {post.user ? (

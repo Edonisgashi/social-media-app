@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { BsBookmark } from "react-icons/bs";
 import { ImProfile } from "react-icons/im";
 import { FaUserFriends } from "react-icons/fa";
-import { ButtonGroup, Dropdown } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import {
   MdAdd,
   MdOutlineModeEdit,
@@ -89,6 +89,7 @@ const Menu = ({ activeUser, handleTheme, isDark, handleClose }) => {
                 activeUser={activeUser}
                 text="Log out"
                 signOutUser={signOutUser}
+                handleClose={handleClose}
               />
             </Dropdown.Item>
             <Dropdown.Item>
@@ -105,7 +106,7 @@ const Menu = ({ activeUser, handleTheme, isDark, handleClose }) => {
                   onClick={handleTheme}
                 >
                   {isDark ? <MdOutlineLightMode /> : <CiDark />}
-                  {isDark ? "Light Mode" : " Dark Mode"}
+                  {isDark ? " Light Mode" : " Dark Mode"}
                 </h5>
               </li>
             </Dropdown.Item>

@@ -10,7 +10,7 @@ const Home = ({ isDark, handleTheme }) => {
   console.log(activeUser);
   return (
     <div
-      className="d-flex justify-content-between col-12"
+      className="d-flex justify-content-center col-12"
       style={{ overflowX: "hidden" }}
     >
       <div className="timeline d-flex flex-column col-10 mb-5 ">
